@@ -1,3 +1,6 @@
+import sympy as sp
+import numpy as np
+
 def ff_velocity(t):
     """
     Calculates velocity of a freely falling object
@@ -51,3 +54,40 @@ def vt_position(v, t, h):
 
 def hz_position(v,t):
     return v*t
+
+def position(vel,phi,time,height):
+    t = sp.Symbol('t', real=True, positive=True)
+    g = sp.Symbol('g', real=True, positive=True)
+    v = sp.Symbol('v', real=True, positive=True)
+    angle = sp.Symbol('angle', real=True, positive=True)
+    h = sp.Symbol('h',real=True,positive=True)
+    G = 9.81
+    acc_x = 0
+    acc_y = -g
+    vel_x = sp.integrate(acc_x, t) + v * sp.cos(angle)
+    vel_y = sp.integrate(acc_y, t) + v * sp.sin(angle)
+    pos_x = sp.integrate(vel_x, t)
+    pos_y = sp.integrate(vel_y, t) + h
+
+    print('acc_x =', acc_x)
+    print('acc_y =', acc_y)
+    print('vel_x =', vel_x)
+    print('vel_y =', vel_y)
+    print('pos_x =', pos_x)
+    print('pos_y =', pos_y)
+
+    ANGLE = np.deg2rad(phi)
+
+    pos_x_t = pos_x.subs({angle: ANGLE, v: vel})
+    pos_y_t = pos_y.subs({v: vel, angle: ANGLE, g: G, h: height})
+    print(pos_x_t)
+    print(pos_y_t)
+    pxs, pys = [], []
+    print(("888888888888888888888"))
+
+    for T in np.linspace(0, time):
+        px = float(pos_x_t.subs(t, T))
+        py = float(pos_y_t.subs(t, T))
+        pxs.append(px)
+        pys.append(py)
+    return pxs,pys

@@ -98,30 +98,28 @@ def do_calculations():
     v = get_v()
     phi = get_phi()
     g = 9.81
+    vel=v
 
     # calculations
     print("time")
-    print(float(t))
-    print(float(calculate.quad(-g/2,v*math.cos(math.degrees(phi)),h)))
+    print(t)
+    print(float(calculate.quad(-g/2,v*math.sin(np.deg2rad(phi)),h)))
     print("---")
-    if float(t) > float(calculate.quad(-g/2,v,h)):
+    if float(t) > float(calculate.quad(-g/2,v*math.sin(math.degrees(phi)),h)):
         tk.messagebox.showwarning("Warning", "The desired plotting time is greater than the timespan of the fall!")
 
     time = np.linspace(0, t)
-    h_list = [h for x in range(len(time))]
-    v_list = [v for x in range(len(time))]
+    v_list = [v*math.sin(np.deg2rad(phi)) for x in range(len(time))]
     v = list(map(kinematics.vt_velocity, v_list, time))
-    pos = list(map(kinematics.vt_position,v_list, time, h_list))
+    px,py=kinematics.position(vel,phi,t,h)
 
-    print(pos)
-
-    x = np.ones((len(pos)))
+    print(py)
 
     m_ene = []
-    for i in range((len(pos))):
+    for i in range((len(py))):
         m_ene.append(m)
 
-    pe = list(map(energy.potential_energy, m_ene, pos))
+    pe = list(map(energy.potential_energy, m_ene, py))
     ke = list(map(energy.kinetic_energy, m_ene, v))
     r = list(map(energy.ke_by_pe, ke, pe))
 
@@ -130,7 +128,7 @@ def do_calculations():
     ax[1, 0].grid(True)
     ax[1, 1].grid(True)
 
-    ax[0, 0].set_xlabel("Time (s)")
+    ax[0, 0].set_xlabel("Distance (m)")
     ax[0, 0].set_ylabel("Height (m)")
 
     ax[0, 1].set_xlabel("Time (s)")
@@ -147,11 +145,11 @@ def do_calculations():
     ax3.tick_params(axis='y', labelcolor='g')
     ax3.legend(loc='upper center', frameon=False, ncol=2)
 
-    ax[0, 0].scatter(time, pos, c='red', alpha=0.3)
+    ax[0, 0].scatter(px, py, c='red', alpha=0.3)
     ax[0, 1].plot(time, pe, linestyle=":", color='black', label="Potential Energy")
     ax2.plot(time, ke, linestyle="-", color='r', label="Kinetic Energy")
-    ax[1, 1].plot(pos, ke, linestyle=":", color='b', label="Kinetic Energy")
-    ax3.plot(pos, pe, linestyle="--", color='g', label="Potential Energy")
+    ax[1, 1].plot(py, ke, linestyle=":", color='b', label="Kinetic Energy")
+    ax3.plot(py, pe, linestyle="--", color='g', label="Potential Energy")
     ax[1, 0].plot(time, v, linestyle="-.", color='b', label="Velocity")
     ax4.plot(time, r, linestyle="--", color='r', label="KE/PE")
     plot_graph()
@@ -160,8 +158,9 @@ def adjust():
     if f_plot:
         h = get_h()
         v = get_v()
+        phi = get_phi()
         g = 9.81
-        t_scale.set(float(calculate.quad(-g/2,v,h)))
+        t_scale.set(float(calculate.quad(-g/2,v*math.sin(np.deg2rad(phi)),h)))
         print("t")
         print(get_t())
         print("--")
@@ -175,7 +174,7 @@ def plot_graph():
     f_plot = True
     canvas.flush_events()
     canvas.draw()
-    canvas.get_tk_widget().grid(row=5, column=0, ipadx=5, ipady=5, columnspan=4)
+    canvas.get_tk_widget().grid(row=6, column=0, ipadx=5, ipady=5, columnspan=4)
 
 
 canvas = FigureCanvasTkAgg(fig, master=window)
@@ -193,8 +192,10 @@ t_label.grid(row=2, column=0)
 t_scale.grid(row=2, column=1, columnspan=3)
 v_label.grid(row=3, column=0)
 v_scale.grid(row=3, column=1, columnspan=3)
-btn_plot.grid(row=4, column=0, pady=20, columnspan=2)
-btn_adjust.grid(row=4, column=1, pady=20, columnspan=2)
+phi_label.grid(row=4, column=0)
+phi_scale.grid(row=4, column=1, columnspan=3)
+btn_plot.grid(row=5, column=0, pady=20, columnspan=2)
+btn_adjust.grid(row=5, column=1, pady=20, columnspan=2)
 
 # show the window
 window.mainloop()
