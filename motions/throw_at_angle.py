@@ -1,7 +1,6 @@
 # imports
 import math
 import tkinter as tk
-from math import sqrt, floor
 import numpy as np
 import matplotlib.pyplot as plt
 from formula import energy

@@ -83,7 +83,6 @@ def position(vel,phi,time,height):
     print(pos_x_t)
     print(pos_y_t)
     pxs, pys = [], []
-    print(("888888888888888888888"))
 
     for T in np.linspace(0, time):
         px = float(pos_x_t.subs(t, T))
