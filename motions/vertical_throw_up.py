@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from formula import energy
 from formula import kinematics
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
-from formula import calculate
+from formula import calculates
 
 # verification flags
 f_plot = False

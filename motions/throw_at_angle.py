@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from formula import energy
 from formula import kinematics
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
-from formula import calculate
+from formula import calculates
 
 # verification flags
 f_plot = False
@@ -108,11 +108,8 @@ def do_calculations():
         tk.messagebox.showwarning("Warning", "The desired plotting time is greater than the timespan of the fall!")
 
     time = np.linspace(0, t)
-    v_list = [v*math.sin(np.deg2rad(phi)) for x in range(len(time))]
-    v = list(map(kinematics.vt_velocity, v_list, time))
     px,py=kinematics.position(vel,phi,t,h)
-
-    print(py)
+    v = kinematics.v_tot(vel,phi,t)
 
     m_ene = []
     for i in range((len(py))):
@@ -143,6 +140,13 @@ def do_calculations():
     ax3.set_ylabel("Potential Energy (J)", color="g")
     ax3.tick_params(axis='y', labelcolor='g')
     ax3.legend(loc='upper center', frameon=False, ncol=2)
+
+    ax[1, 0].set_xlabel("Time (s)")
+    ax[1, 0].set_ylabel("Velocity (m/s)")
+    ax[1, 0].legend(loc='lower center', frameon=False, ncol=2)
+    ax4.set_ylabel("KE/PE", color="r")
+    ax4.tick_params(axis='y', labelcolor='r')
+    ax4.legend(loc='upper center', frameon=False, ncol=2)
 
     ax[0, 0].scatter(px, py, c='red', alpha=0.3)
     ax[0, 1].plot(time, pe, linestyle=":", color='black', label="Potential Energy")
