@@ -3,25 +3,6 @@ import math
 import sympy as sp
 import numpy as np
 
-Me = 6e24  # Mass of Earth in kg
-Ms = 2e30  # Mass of Sun in kg
-Mj = 1.9e27  # Mass of Jupiter
-
-G = 6.673e-11  # Gravitational Constant
-
-RR = 1.496e11  # Normalizing distance in km (= 1 AU)
-MM = 6e24  # Normalizing mass
-TT = 365 * 24 * 60 * 60.0  # Normalizing time (1 year)
-
-FF = (G * MM ** 2) / RR ** 2  # Unit force
-EE = FF * RR  # Unit energy
-
-GG = (MM * G * TT ** 2) / (RR ** 3)
-
-Me = Me / MM  # Normalized mass of Earth
-Ms = Ms / MM  # Normalized mass of Sun
-Mj = 500 * Mj / MM  # Normalized mass of Jupiter/Super Jupiter
-
 
 def ff_velocity(t):
     """
@@ -79,10 +60,24 @@ def vt_position(v, t, h):
 
 
 def hz_position(v, t):
+    '''
+    Caclulates the horizontal position of the projectile at a given moment
+    :param v: initial velocity
+    :param t: time
+    :return: position
+    '''
     return v * t
 
 
 def position(vel, phi, time, height):
+    '''
+    Calculates the position in a xOy system of the projectile at any time
+    :param vel: initial value of the velocity
+    :param phi: initial angle between the horizontal and the velocity vector
+    :param time: plotting time
+    :param height: initial height
+    :return: lists with the x and y positions accordingly
+    '''
     t = sp.Symbol('t', real=True, positive=True)
     g = sp.Symbol('g', real=True, positive=True)
     v = sp.Symbol('v', real=True, positive=True)
@@ -111,6 +106,13 @@ def position(vel, phi, time, height):
 
 
 def v_tot(vel, phi, time):
+    '''
+    Calculates the resultant velocity at any given moment
+    :param vel: initial velocity
+    :param phi: initial angle
+    :param time: plotting time
+    :return: list of velocities
+    '''
     t = sp.Symbol('t', real=True, positive=True)
     g = sp.Symbol('g', real=True, positive=True)
     v = sp.Symbol('v', real=True, positive=True)
@@ -132,41 +134,29 @@ def v_tot(vel, phi, time):
         velocity.append(math.sqrt(vx ** 2 + vy ** 2))
     return velocity
 
+# Symbolic equation solver for force between two bodies
+def focrce_function(m1, m2, r):
+    G = 6.673e-11  # Gravitational Constant
+    RR = 1.496e11  # Normalizing distance in km (= 1 AU)
+    MM = 6e24  # Normalizing mass
+    TT = 365 * 24 * 60 * 60.0  # Normalizing time (1 year)
 
-def force_es(r):
-    F = np.zeros(2)
-    Fmag = GG * Me * Ms / (np.linalg.norm(r) + 1e-20) ** 2
-    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
-    F[0] = Fmag * np.cos(theta)
-    F[1] = Fmag * np.sin(theta)
-    if r[0] > 0:
-        F[0] = -F[0]
-    if r[1] > 0:
-        F[1] = -F[1]
-
+    F=(m1*m2)/(r[1]**2+r[0]**2)*(G*MM*TT**2)/RR**3
     return F
 
-
-def force_js(r):
-    F = np.zeros(2)
-    Fmag = GG * Mj * Ms / (np.linalg.norm(r) + 1e-20) ** 2
-    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
-    F[0] = Fmag * np.cos(theta)
-    F[1] = Fmag * np.sin(theta)
-    if r[0] > 0:
-        F[0] = -F[0]
-    if r[1] > 0:
-        F[1] = -F[1]
-
-    return F
-
-
-def force_ej(re, rj):
+def force_12(r1,r2,m1,m2):
+    '''
+    force between m1 and m2
+    :param m1: mass of m1
+    :param m2: mass of m2
+    :param r: distance between the two astronomical objects
+    :return: force on the axes
+    '''
     r = np.zeros(2)
     F = np.zeros(2)
-    r[0] = re[0] - rj[0]
-    r[1] = re[1] - rj[1]
-    Fmag = GG * Me * Mj / (np.linalg.norm(r) + 1e-20) ** 2
+    r[0] = r1[0] - r2[0]
+    r[1] = r1[1] - r2[1]
+    Fmag = focrce_function(m1,m2,r) / (np.linalg.norm(r) + 1e-20) ** 2
     theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
     F[0] = Fmag * np.cos(theta)
     F[1] = Fmag * np.sin(theta)
@@ -174,53 +164,116 @@ def force_ej(re, rj):
         F[0] = -F[0]
     if r[1] > 0:
         F[1] = -F[1]
-
     return F
 
 
-def force(r, planet, ro, vo):
-    if planet == 'earth':
-        return force_es(r) + force_ej(r, ro)
-    if planet == 'jupiter':
-        return force_js(r) - force_ej(r, ro)
+def force_13(r1,r3,m1,m3):
+    '''
+    force between m1 and m3
+    :param r: distance between the two astronomical objects
+    :param m1: mass of m1
+    :param m3: mass of m3
+    :return: force on the axes
+    '''
+    r = np.zeros(2)
+    F = np.zeros(2)
+    r[0] = r1[0] - r3[0]
+    r[1] = r1[1] - r3[1]
+    Fmag = focrce_function(m1,m3,r) / (np.linalg.norm(r) + 1e-20) ** 2
+    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
+    F[0] = Fmag * np.cos(theta)
+    F[1] = Fmag * np.sin(theta)
+    if r[0] > 0:
+        F[0] = -F[0]
+    if r[1] > 0:
+        F[1] = -F[1]
+    return F
 
 
-def dr_dt(t, r, v):
+def force_23(r2, r3, m2, m3):
+    '''
+    force between m2 and m3
+    :param r2: position of m2
+    :param r3: position of m3
+    :param m2: mass of m2
+    :param m3: mass of m3
+    :return: force on the axes
+    '''
+    r = np.zeros(2)
+    F = np.zeros(2)
+    r[0] = r2[0] - r3[0]
+    r[1] = r2[1] - r3[1]
+    Fmag = focrce_function(m2,m3,r) / (np.linalg.norm(r) + 1e-20) ** 2
+    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
+    F[0] = Fmag * np.cos(theta)
+    F[1] = Fmag * np.sin(theta)
+    if r[0] > 0:
+        F[0] = -F[0]
+    if r[1] > 0:
+        F[1] = -F[1]
+    return F
+
+
+def force(m1, m2, m3, r1, r2, r3, planet):
+    '''
+    calculates all the forces for the selected planet
+    :param m1:
+    :param m2:
+    :param m3:
+    :param r1:
+    :param r2:
+    :param r3:
+    :param planet:
+    :return:
+    '''
+    if planet == 1:
+        return force_12(r1, r2, m1, m2) + force_13(r1, r3, m1, m3)
+    if planet == 2:
+        return force_12(r1, r2, m1, m2) - force_23(r2, r3, m2, m3)
+    if planet == 3:
+        return force_13(r1, r3, m1, m3) - force_23(r2, r3, m2, m3)
+
+
+def dr_dt(v):
     return v
 
 
-def dr_dt(t, r, v, planet, ro, vo):
-    return v
+def dv_dt(m1, m2, m3, r1, r2, r3, planet):
+    F = force(m1, m2, m3, r1, r2, r3, planet)
+    if planet == 1:
+        a = F / m1
+    if planet == 2:
+        a = F / m2
+    if planet == 3:
+        a = F / m3
+    return a
 
 
-def dv_dt(t, r, v, planet=None, ro=None, vo=None):
-    F = force(r, planet, ro, vo)
-    if planet == 'earth':
-        y = F / Me
-    if planet == 'jupiter':
-        y = F / Mj
-    return y
+def KineticEnergy(v1, v2, v3, m1, m2, m3):
+    vn1 = np.linalg.norm(v1)
+    vn2 = np.linalg.norm(v2)
+    vn3 = np.linalg.norm(v3)
+    return 0.5 * m1 * vn1 ** 2, 0.5 * m2 * vn2 ** 2, 0.5 * m3 * vn3 ** 2
 
 
-def KineticEnergy(v):
-    vn = np.linalg.norm(v)
-    return 0.5 * Me * vn ** 2
+def PotentialEnergy(m1, m2, m3, r1, r2, r3):
+    fmag1 = np.linalg.norm(force(m1, m2, m3, r1, r2, r3, 1))
+    rmag1 = np.linalg.norm(r1)
+    fmag2 = np.linalg.norm(force(m1, m2, m3, r1, r2, r3, 2))
+    rmag2 = np.linalg.norm(r2)
+    fmag3 = np.linalg.norm(force(m1, m2, m3, r1, r2, r3, 3))
+    rmag3 = np.linalg.norm(r3)
+    return -fmag1 * rmag1, -fmag2 * rmag2, -fmag3 * rmag3
 
 
-def PotentialEnergy(r):
-    fmag = np.linalg.norm(force_es(r))
-    rmag = np.linalg.norm(r)
-    return -fmag * rmag
-
-
-def AngMomentum(r, v):
+def AngMomentum(r, v, m):
     rn = np.linalg.norm(r)
     vn = np.linalg.norm(v)
     r = r / rn
     v = v / vn
     rdotv = r[0] * v[0] + r[1] * v[1]
     theta = math.acos(rdotv)
-    return Me * rn * vn * np.sin(theta)
+    return m * rn * vn * np.sin(theta)
 
 
 def AreaCalc(r1, r2):
