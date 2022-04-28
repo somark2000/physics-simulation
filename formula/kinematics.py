@@ -269,8 +269,8 @@ def PotentialEnergy(m1, m2, m3, r1, r2, r3):
 def AngMomentum(r, v, m):
     rn = np.linalg.norm(r)
     vn = np.linalg.norm(v)
-    r = r / rn
-    v = v / vn
+    r = [x / rn for x in r]
+    v = [x / vn for x in v]
     rdotv = r[0] * v[0] + r[1] * v[1]
     theta = math.acos(rdotv)
     return m * rn * vn * np.sin(theta)

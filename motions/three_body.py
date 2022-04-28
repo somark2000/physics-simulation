@@ -101,6 +101,7 @@ t2 = dv_dt(ti,ri,vi)
 print t1
 print t2
 """
+
 KE1[0], KE2[0], KE3[0] = KineticEnergy(v1[0, :], v2[0, :], v3[0, :], m1, m2, m3)
 PE1[0], PE2[0], PE3[0] = PotentialEnergy(m1, m2, m3, r1[0, :], r2[0, :], r3[0, :])
 AM1[0] = AngMomentum(r1[0, :], v1[0, :], m1)
@@ -112,17 +113,17 @@ AreaVal3[0] = 0
 
 for i in range(0, N - 1):
     [r1[i + 1, :], v1[i + 1, :]] = RK4Solver(m1, m2, m3, r1[i, :], v1[i, :], h, 1, r2[i, :], r3[i, :])
-    [r2[i + 1, :], v2[i + 1, :]] = RK4Solver(m1, m2, m3, r2[i, :], v2[i, :], h, 2, r1[i, :], r3[i, :])
-    [r3[i + 1, :], v3[i + 1, :]] = RK4Solver(m1, m2, m3, r3[i, :], v3[i, :], h, 3, r1[i, :], r2[i, :])
+    [r2[i + 1, :], v2[i + 1, :]] = RK4Solver(m2, m1, m3, r2[i, :], v2[i, :], h, 2, r1[i, :], r3[i, :])
+    [r3[i + 1, :], v3[i + 1, :]] = RK4Solver(m3, m1, m2, r3[i, :], v3[i, :], h, 3, r1[i, :], r2[i, :])
 
     KE1[i+1], KE2[i+1], KE3[i+1] = KineticEnergy(v1[i+1, :], v2[i+1, :], v3[i+1, :], m1, m2, m3)
     PE1[i+1], PE2[i+1], PE3[i+1] = PotentialEnergy(m1, m2, m3, r1[i+1, :], r2[i+1, :], r3[i+1, :])
     AM1[i+1] = AngMomentum(r1[i+1, :], v1[i+1, :], m1)
-    AM2[i+1] = AngMomentum(r2[i+1, :], v2[i+1, :], m2)
-    AM3[i+1] = AngMomentum(r3[i+1, :], v3[i+1, :], m3)
+    # AM2[i+1] = AngMomentum(r2[i+1, :], v2[i+1, :], m2)
+    # AM3[i+1] = AngMomentum(r3[i+1, :], v3[i+1, :], m3)
     AreaVal1[i + 1] = AreaVal1[i] + AreaCalc(r1[i, :], r1[i + 1, :])
-    AreaVal2[i + 1] = AreaVal2[i] + AreaCalc(r2[i, :], r2[i + 1, :])
-    AreaVal3[i + 1] = AreaVal3[i] + AreaCalc(r3[i, :], r3[i + 1, :])
+    # AreaVal2[i + 1] = AreaVal2[i] + AreaCalc(r2[i, :], r2[i + 1, :])
+    # AreaVal3[i + 1] = AreaVal3[i] + AreaCalc(r3[i, :], r3[i + 1, :])
 
 lbl = 'orbit'
 py.plot(0, 0, 'ro', linewidth=7)
@@ -131,32 +132,33 @@ mplot(1, r2[:, 0], r2[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'green'
 mplot(1, r3[:, 0], r3[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'red', 'Sun')
 py.ylim([-9, 9])
 
-# py.axis('equal')
-# mplot(2, t, KE, r'Time, $t$ (years)', r'Kinetice Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'blue',
-#       'KE')
-# mplot(2, t, PE, r'Time, $t$ (years)', r'Potential Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'red',
-#       'PE')
-# mplot(2, t, KE + PE, r'Time, $t$ (years)', r'Total Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'black',
-#       'Total Energy')
-# q = py.legend(loc=0)
-# q.draw_frame(False)
-# py.ylim([-180, 180])
-#
-# mplot(3, t, AM, r'Time, $t$ (years)', r'Angular Momentum', 'black', lbl)
-# py.ylim([4, 8])
-#
-# mplot(4, t, AreaVal, r'Time, $t$ (years)', r'Sweeped Area ($AU^2$)', 'black', lbl)
+py.axis('equal')
+mplot(2, t, KE1, r'Time, $t$ (years)', r'Kinetice Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'blue',
+      'KE')
+mplot(2, t, PE1, r'Time, $t$ (years)', r'Potential Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'red',
+      'PE')
+mplot(2, t, KE1 + PE1, r'Time, $t$ (years)', r'Total Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'black',
+      'Total Energy')
+q = py.legend(loc=0)
+q.draw_frame(False)
+py.ylim([-180, 180])
+
+mplot(3, t, AM1, r'Time, $t$ (years)', r'Angular Momentum', 'black', lbl)
+py.ylim([4, 8])
+
+mplot(4, t, AreaVal1, r'Time, $t$ (years)', r'Sweeped Area ($AU^2$)', 'black', lbl)
 
 
 # Animation function. Reads out the positon coordinates sequentially
 def animate(i):
-    earth_trail = 40;
-    jupiter_trail = 200;
+    trail1 = 40;
+    trail2 = 200;
+    trail3 = 200;
     tm_yr = 'Elapsed time = ' + str(round(t[i], 1)) + ' years'
     ttl.set_text(tm_yr)
-    line1.set_data(r1[i:max(1, i - earth_trail):-1, 0], r1[i:max(1, i - earth_trail):-1, 1])
-    line2.set_data(r2[i:max(1, i - jupiter_trail):-1, 0], r2[i:max(1, i - jupiter_trail):-1, 1])
-    line3.set_data(r3[i:max(1, i - jupiter_trail):-1, 0], r3[i:max(1, i - jupiter_trail):-1, 1])
+    line1.set_data(r1[i:max(1, i - trail1):-1, 0], r1[i:max(1, i - trail1):-1, 1])
+    line2.set_data(r2[i:max(1, i - trail2):-1, 0], r2[i:max(1, i - trail3):-1, 1])
+    line3.set_data(r3[i:max(1, i - trail3):-1, 0], r3[i:max(1, i - trail3):-1, 1])
 
     return (line1, line2, line3)
 

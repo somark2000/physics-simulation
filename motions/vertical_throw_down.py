@@ -100,9 +100,9 @@ def do_calculations():
     print("time")
     print(v)
     print(float(t))
-    print(float(calculate.quad(-g / 2, v, h)))
+    print(float(calculates.quad(-g / 2, v, h)))
     print("---")
-    if float(t) > float(calculate.quad(-g / 2, v, h)):
+    if float(t) > float(calculates.quad(-g / 2, v, h)):
         tk.messagebox.showwarning("Warning", "The desired plotting time is greater than the timespan of the fall!")
 
     time = np.linspace(0, t)
@@ -167,7 +167,7 @@ def adjust():
         h = get_h()
         v = get_v()
         g = 9.81
-        t_scale.set(float(calculate.quad(-g / 2, v, h)))
+        t_scale.set(float(calculates.quad(-g / 2, v, h)))
         print("t")
         print(get_t())
         print("--")
