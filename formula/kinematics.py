@@ -106,13 +106,13 @@ def position(vel, phi, time, height):
 
 
 def v_tot(vel, phi, time):
-    '''
+    """
     Calculates the resultant velocity at any given moment
     :param vel: initial velocity
     :param phi: initial angle
     :param time: plotting time
     :return: list of velocities
-    '''
+    """
     t = sp.Symbol('t', real=True, positive=True)
     g = sp.Symbol('g', real=True, positive=True)
     v = sp.Symbol('v', real=True, positive=True)
@@ -136,12 +136,8 @@ def v_tot(vel, phi, time):
 
 # Symbolic equation solver for force between two bodies
 def focrce_function(m1, m2, r):
-    G = 6.673e-11  # Gravitational Constant
-    RR = 1.496e11  # Normalizing distance in km (= 1 AU)
-    MM = 6e24  # Normalizing mass
-    TT = 365 * 24 * 60 * 60.0  # Normalizing time (1 year)
-
-    F=(m1*m2)/(r[1]**2+r[0]**2)*(G*MM*TT**2)/RR**3
+    G = 6.673e-11  # Gravitational Constant)
+    F=(m1*m2)/(r[1]**2+r[0]**2)*G
     return F
 
 def force_12(r1,r2,m1,m2):
@@ -160,9 +156,9 @@ def force_12(r1,r2,m1,m2):
     theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
     F[0] = Fmag * np.cos(theta)
     F[1] = Fmag * np.sin(theta)
-    if r[0] > 0:
+    if r[0] < 0:
         F[0] = -F[0]
-    if r[1] > 0:
+    if r[1] < 0:
         F[1] = -F[1]
     return F
 
@@ -183,9 +179,9 @@ def force_13(r1,r3,m1,m3):
     theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
     F[0] = Fmag * np.cos(theta)
     F[1] = Fmag * np.sin(theta)
-    if r[0] > 0:
+    if r[0] < 0:
         F[0] = -F[0]
-    if r[1] > 0:
+    if r[1] < 0:
         F[1] = -F[1]
     return F
 
@@ -207,9 +203,9 @@ def force_23(r2, r3, m2, m3):
     theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
     F[0] = Fmag * np.cos(theta)
     F[1] = Fmag * np.sin(theta)
-    if r[0] > 0:
+    if r[0] < 0:
         F[0] = -F[0]
-    if r[1] > 0:
+    if r[1] < 0:
         F[1] = -F[1]
     return F
 
@@ -229,9 +225,9 @@ def force(m1, m2, m3, r1, r2, r3, planet):
     if planet == 1:
         return force_12(r1, r2, m1, m2) + force_13(r1, r3, m1, m3)
     if planet == 2:
-        return force_12(r1, r2, m1, m2) - force_23(r2, r3, m2, m3)
+        return force_12(r1, r2, m1, m2) + force_23(r2, r3, m2, m3)
     if planet == 3:
-        return force_13(r1, r3, m1, m3) - force_23(r2, r3, m2, m3)
+        return force_13(r1, r3, m1, m3) + force_23(r2, r3, m2, m3)
 
 
 def dr_dt(v):
@@ -271,6 +267,10 @@ def AngMomentum(r, v, m):
     vn = np.linalg.norm(v)
     r = [x / rn for x in r]
     v = [x / vn for x in v]
+
+    print("///")
+    print(r)
+    print(v)
     rdotv = r[0] * v[0] + r[1] * v[1]
     theta = math.acos(rdotv)
     return m * rn * vn * np.sin(theta)
