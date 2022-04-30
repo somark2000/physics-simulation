@@ -137,129 +137,94 @@ def v_tot(vel, phi, time):
 # Symbolic equation solver for force between two bodies
 def focrce_function(m1, m2, r):
     G = 6.673e-11  # Gravitational Constant)
-    F=(m1*m2)/(r[1]**2+r[0]**2)*G
+    F=G*(m1*m2)/(r[1]**2+r[0]**2)
     return F
 
-def force_12(r1,r2,m1,m2):
-    '''
-    force between m1 and m2
-    :param m1: mass of m1
-    :param m2: mass of m2
-    :param r: distance between the two astronomical objects
-    :return: force on the axes
-    '''
+def force_1s(r,m,M):
+    G = 6.673e-11  # Gravitational Constant
+    RR = 1.496e11  # Normalizing distance in km (= 1 AU)
+    MM = 6e24  # Normalizing mass
+    TT = 365 * 24 * 60 * 60.0  # Normalizing time (1 year)
+    GG = (MM * G * TT ** 2) / (RR ** 3)
+    F = np.zeros(2)
+    Fmag = GG * m * M / (np.linalg.norm(r) + 1e-20) ** 2
+    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
+    F[0] = Fmag * np.cos(theta)
+    F[1] = Fmag * np.sin(theta)
+    if r[0] > 0:
+        F[0] = -F[0]
+    if r[1] > 0:
+        F[1] = -F[1]
+
+    return F
+
+
+def force_2s(r,m,M):
+    G = 6.673e-11  # Gravitational Constant
+    RR = 1.496e11  # Normalizing distance in km (= 1 AU)
+    MM = 6e24  # Normalizing mass
+    TT = 365 * 24 * 60 * 60.0  # Normalizing time (1 year)
+    GG = (MM * G * TT ** 2) / (RR ** 3)
+    F = np.zeros(2)
+    Fmag = GG * m * M / (np.linalg.norm(r) + 1e-20) ** 2
+    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
+    F[0] = Fmag * np.cos(theta)
+    F[1] = Fmag * np.sin(theta)
+    if r[0] > 0:
+        F[0] = -F[0]
+    if r[1] > 0:
+        F[1] = -F[1]
+
+    return F
+
+
+def force_12(r1, r2, m1, m2):
+    G = 6.673e-11  # Gravitational Constant
+    RR = 1.496e11  # Normalizing distance in km (= 1 AU)
+    MM = 6e24  # Normalizing mass
+    TT = 365 * 24 * 60 * 60.0  # Normalizing time (1 year)
+    GG = (MM * G * TT ** 2) / (RR ** 3)
     r = np.zeros(2)
     F = np.zeros(2)
     r[0] = r1[0] - r2[0]
     r[1] = r1[1] - r2[1]
-    Fmag = focrce_function(m1,m2,r) / (np.linalg.norm(r) + 1e-20) ** 2
+    Fmag = GG * m1 * m2 / (np.linalg.norm(r) + 1e-20) ** 2
     theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
     F[0] = Fmag * np.cos(theta)
     F[1] = Fmag * np.sin(theta)
-    if r[0] < 0:
+    if r[0] > 0:
         F[0] = -F[0]
-    if r[1] < 0:
+    if r[1] > 0:
         F[1] = -F[1]
     return F
 
 
-def force_13(r1,r3,m1,m3):
-    '''
-    force between m1 and m3
-    :param r: distance between the two astronomical objects
-    :param m1: mass of m1
-    :param m3: mass of m3
-    :return: force on the axes
-    '''
-    r = np.zeros(2)
-    F = np.zeros(2)
-    r[0] = r1[0] - r3[0]
-    r[1] = r1[1] - r3[1]
-    Fmag = focrce_function(m1,m3,r) / (np.linalg.norm(r) + 1e-20) ** 2
-    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
-    F[0] = Fmag * np.cos(theta)
-    F[1] = Fmag * np.sin(theta)
-    if r[0] < 0:
-        F[0] = -F[0]
-    if r[1] < 0:
-        F[1] = -F[1]
-    return F
-
-
-def force_23(r2, r3, m2, m3):
-    '''
-    force between m2 and m3
-    :param r2: position of m2
-    :param r3: position of m3
-    :param m2: mass of m2
-    :param m3: mass of m3
-    :return: force on the axes
-    '''
-    r = np.zeros(2)
-    F = np.zeros(2)
-    r[0] = r2[0] - r3[0]
-    r[1] = r2[1] - r3[1]
-    Fmag = focrce_function(m2,m3,r) / (np.linalg.norm(r) + 1e-20) ** 2
-    theta = math.atan(np.abs(r[1]) / (np.abs(r[0]) + 1e-20))
-    F[0] = Fmag * np.cos(theta)
-    F[1] = Fmag * np.sin(theta)
-    if r[0] < 0:
-        F[0] = -F[0]
-    if r[1] < 0:
-        F[1] = -F[1]
-    return F
-
-
-def force(m1, m2, m3, r1, r2, r3, planet):
-    '''
-    calculates all the forces for the selected planet
-    :param m1:
-    :param m2:
-    :param m3:
-    :param r1:
-    :param r2:
-    :param r3:
-    :param planet:
-    :return:
-    '''
+def force(r1,r2,m1,m2,M, planet):
     if planet == 1:
-        return force_12(r1, r2, m1, m2) + force_13(r1, r3, m1, m3)
+        return force_1s(r1,m1,M) + force_12(r1,r2,m1,m2)
     if planet == 2:
-        return force_12(r1, r2, m1, m2) + force_23(r2, r3, m2, m3)
-    if planet == 3:
-        return force_13(r1, r3, m1, m3) + force_23(r2, r3, m2, m3)
+        return force_2s(r2,m2,M) - force_12(r1,r2,m1,m2)
 
 
 def dr_dt(v):
     return v
 
 
-def dv_dt(m1, m2, m3, r1, r2, r3, planet):
-    F = force(m1, m2, m3, r1, r2, r3, planet)
+def dv_dt(r1, r2, m1, m2, M, planet):
+    F = force(r1, r2, m1, m2, M, planet)
     if planet == 1:
-        a = F / m1
+        acc = F / m1
     if planet == 2:
-        a = F / m2
-    if planet == 3:
-        a = F / m3
-    return a
+        acc = F / m2
+    return acc
 
 
-def KineticEnergy(v1, v2, v3, m1, m2, m3):
-    vn1 = np.linalg.norm(v1)
-    vn2 = np.linalg.norm(v2)
-    vn3 = np.linalg.norm(v3)
-    return 0.5 * m1 * vn1 ** 2, 0.5 * m2 * vn2 ** 2, 0.5 * m3 * vn3 ** 2
-
-
-def PotentialEnergy(m1, m2, m3, r1, r2, r3):
-    fmag1 = np.linalg.norm(force(m1, m2, m3, r1, r2, r3, 1))
-    rmag1 = np.linalg.norm(r1)
-    fmag2 = np.linalg.norm(force(m1, m2, m3, r1, r2, r3, 2))
-    rmag2 = np.linalg.norm(r2)
-    fmag3 = np.linalg.norm(force(m1, m2, m3, r1, r2, r3, 3))
-    rmag3 = np.linalg.norm(r3)
-    return -fmag1 * rmag1, -fmag2 * rmag2, -fmag3 * rmag3
+def PotentialEnergy(r1,m1,r2,m2,M):
+    f1mag = np.linalg.norm(force_1s(r1,m1,M))
+    r1mag = np.linalg.norm(r1)
+    f2mag = np.linalg.norm(force_2s(r2, m2, M))
+    r2mag = np.linalg.norm(r2)
+    return -f1mag * r1mag,-f2mag * r2mag
 
 
 def AngMomentum(r, v, m):
@@ -267,10 +232,6 @@ def AngMomentum(r, v, m):
     vn = np.linalg.norm(v)
     r = [x / rn for x in r]
     v = [x / vn for x in v]
-
-    print("///")
-    print(r)
-    print(v)
     rdotv = r[0] * v[0] + r[1] * v[1]
     theta = math.acos(rdotv)
     return m * rn * vn * np.sin(theta)
@@ -286,3 +247,8 @@ def AreaCalc(r1, r2):
     rn = 0.5 * (r1n + r2n)
     del_theta = np.abs(theta1 - theta2)
     return 0.5 * del_theta * rn ** 2
+
+
+def KineticEnergy(v,m):
+    vn = np.linalg.norm(v)
+    return 0.5 * m * vn ** 2

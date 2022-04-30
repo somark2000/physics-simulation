@@ -35,22 +35,36 @@ def quad(a, b, c):
 #     return z
 
 
-def RK4Solver(m1, m2, m3, r1, v, h, planet, r2, r3):
-    k11 = kin.dr_dt(v)
-    k21 = kin.dv_dt(m1, m2, m3, r1, r2, r3, planet)
+def RK4Solver(r1,r2,m1,m2,M, v1, v2, h, planet):
+    if planet == 1:
+        k11 = kin.dr_dt(v1)
+        k21 = kin.dv_dt(r1, r2, m1, m2, M, planet)
 
-    k12 = kin.dr_dt(v + 0.5 * h * k21)
-    k22 = kin.dv_dt(m1, m2, m3, r1 + 0.5 * h * k11, r2, r3, planet)
+        k12 = kin.dr_dt(v1 + 0.5 * h * k21)
+        k22 = kin.dv_dt(r1 + 0.5 * h * k11,r2,m1,m2,M,planet)
 
-    k13 = kin.dr_dt(v + 0.5 * h * k22)
-    k23 = kin.dv_dt(m1, m2, m3, r1 + 0.5 * h * k12, r2, r3, planet)
+        k13 = kin.dr_dt(v1 + 0.5 * h * k22)
+        k23 = kin.dv_dt(r1 + 0.5 * h * k12,r2,m1,m2,M,planet)
 
-    k14 = kin.dr_dt(v + h * k23)
-    k24 = kin.dv_dt(m1, m2, m3, r1 + h * k13, r2, r3, planet)
+        k14 = kin.dr_dt(v1 + h * k23)
+        k24 = kin.dv_dt(r1 + h * k13,r2,m1,m2,M,planet)
+        y0 = r1 + h * (k11 + 2. * k12 + 2. * k13 + k14) / 6.
+        y1 = v1 + h * (k21 + 2. * k22 + 2. * k23 + k24) / 6.
 
-    y0 = r1 + h * (k11 + 2. * k12 + 2. * k13 + k14) / 6.
-    y1 = v + h * (k21 + 2. * k22 + 2. * k23 + k24) / 6.
+    if planet == 2:
+        k11 = kin.dr_dt(v2)
+        k21 = kin.dv_dt(r1, r2, m1, m2, M, planet)
 
-    z = np.zeros([2, 2])
+        k12 = kin.dr_dt(v2 + 0.5 * h * k21)
+        k22 = kin.dv_dt(r1, r2 + 0.5 * h * k11, m1, m2, M, planet)
+
+        k13 = kin.dr_dt(v2 + 0.5 * h * k22)
+        k23 = kin.dv_dt(r1, r2 + 0.5 * h * k12, m1, m2, M, planet)
+
+        k14 = kin.dr_dt(v2 + h * k23)
+        k24 = kin.dv_dt(r1, r2 + h * k13, m1, m2, M, planet)
+        y0 = r2 + h * (k11 + 2. * k12 + 2. * k13 + k14) / 6.
+        y1 = v2 + h * (k21 + 2. * k22 + 2. * k23 + k24) / 6.
+
     z = [y0, y1]
     return z

@@ -33,15 +33,15 @@ def get_data():
     data.append(m1)
     data.append(m2)
     data.append(m3)
-    data.append(v1+d)
-    data.append(v2+d)
-    data.append(v3+d)
-    data.append(r1+d)
-    data.append(r2+d)
-    data.append(r3+d)
-    data.append(d)
-    data.append(d)
-    data.append(d)
+    data.append(v1)
+    data.append(v2)
+    data.append(v3)
+    data.append(r1)
+    data.append(r2)
+    data.append(r3)
+    data.append(0)
+    data.append(0)
+    data.append(0)
     return data
 
 
@@ -63,7 +63,7 @@ def prepare():
     data = get_data()
     m1, m2, m3, vv1, vv2, vv3, rr1, rr2, rr3, phi1, phi2, phi3 = data
     ti = 0  # initial time = 0
-    tf = 120  # final time = 120 years
+    tf = 10  # final time = 120 years
     N = 100 * tf  # 100 points per year
     t = np.linspace(ti, tf, N)  # time array from ti to tf with N points
     h = t[2] - t[1]  # time step (uniform)
@@ -106,22 +106,18 @@ def prepare():
     AreaVal3[0] = 0
 
     for i in range(0, N - 1):
-        [r1[i + 1, :], v1[i + 1, :]] = RK4Solver(m1, m2, m3, r1[i, :], v1[i, :], h, 1, r2[i, :], r3[i, :])
-        [r2[i + 1, :], v2[i + 1, :]] = RK4Solver(m2, m1, m3, r2[i, :], v2[i, :], h, 2, r1[i, :], r3[i, :])
-        [r3[i + 1, :], v3[i + 1, :]] = RK4Solver(m3, m1, m2, r3[i, :], v3[i, :], h, 3, r1[i, :], r2[i, :])
-        print("*******")
-        print(r1[i + 1, :], v1[i + 1, :])
-        print(r2[i + 1, :], v2[i + 1, :])
-        print(r3[i + 1, :], v3[i + 1, :])
+        [r1[i + 1, :], v1[i + 1, :]] = RK4Solver(m1, m2, m3, r1[i, :], r2[i, :], r3[i, :], v1[i, :], h, 1)
+        [r2[i + 1, :], v2[i + 1, :]] = RK4Solver(m1, m2, m3, r1[i, :], r2[i, :], r3[i, :], v2[i, :], h, 2)
+        [r3[i + 1, :], v3[i + 1, :]] = RK4Solver(m1, m2, m3, r1[i, :], r2[i, :], r3[i, :], v3[i, :], h, 3)
 
         KE1[i + 1], KE2[i + 1], KE3[i + 1] = KineticEnergy(v1[i + 1, :], v2[i + 1, :], v3[i + 1, :], m1, m2, m3)
         PE1[i + 1], PE2[i + 1], PE3[i + 1] = PotentialEnergy(m1, m2, m3, r1[i + 1, :], r2[i + 1, :], r3[i + 1, :])
         # AM1[i + 1] = AngMomentum(r1[i + 1, :], v1[i + 1, :], m1)
-        AM2[i+1] = AngMomentum(r2[i+1, :], v2[i+1, :], m2)
+        # AM2[i+1] = AngMomentum(r2[i+1, :], v2[i+1, :], m2)
         # AM3[i+1] = AngMomentum(r3[i+1, :], v3[i+1, :], m3)
-        AreaVal1[i + 1] = AreaVal1[i] + AreaCalc(r1[i, :], r1[i + 1, :])
-        AreaVal2[i + 1] = AreaVal2[i] + AreaCalc(r2[i, :], r2[i + 1, :])
-        AreaVal3[i + 1] = AreaVal3[i] + AreaCalc(r3[i, :], r3[i + 1, :])
+        # AreaVal1[i + 1] = AreaVal1[i] + AreaCalc(r1[i, :], r1[i + 1, :])
+        # AreaVal2[i + 1] = AreaVal2[i] + AreaCalc(r2[i, :], r2[i + 1, :])
+        # AreaVal3[i + 1] = AreaVal3[i] + AreaCalc(r3[i, :], r3[i + 1, :])
     print(r2)
 
 
@@ -158,8 +154,8 @@ def animate(i):
 prepare()
 fig, ax = py.subplots()
 ax.axis('square')
-# ax.set_xlim((-90, 90))
-# ax.set_ylim((-90, 90))
+ax.set_xlim((-90, 90))
+ax.set_ylim((-90, 90))
 ax.get_xaxis().set_ticks([])  # enable this to hide x axis ticks
 ax.get_yaxis().set_ticks([])  # enable this to hide y axis ticks
 
@@ -178,6 +174,8 @@ line3, = ax.plot([], [], 'o-', color='red', markevery=10000, markerfacecolor='re
 # anim = animation.FuncAnimation(fig, animate, init_func=init,frames=4000, interval=5, blit=True)
 a = [x[0] for x in r2]
 b = [x[1] for x in r2]
-print(a,b)
-# ax.plot(a,b)
-# plt.show()
+print(a)
+print('***')
+print(b)
+ax.plot(b,a)
+plt.show()
