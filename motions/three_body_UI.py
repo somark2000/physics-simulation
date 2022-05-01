@@ -21,6 +21,7 @@ r1 = np.zeros([N, 2])  # position vector of m1
 v1 = np.zeros([N, 2])  # velocity vector of m1
 r2 = np.zeros([N, 2])  # position vector of m2
 v2 = np.zeros([N, 2])  # velocity vector of m2
+t = np.linspace(ti, tf, N)  # time array from ti to tf with N points
 
 # mass options
 options = [1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
@@ -46,32 +47,48 @@ def get_data():
 def init():
     line1.set_data([], [])
     line2.set_data([], [])
-    return line1, line2,
+    ttl.set_text('')
+    return line1, line2, ttl
 
 
 # Animation function. Reads out the position coordinates sequentially
 def animate(i):
     trail1 = 2000
     trail2 = 2000
+    tm_yr = 'Elapsed time = ' + str(round(t[i], 1)) + ' years'
+    ttl.set_text(tm_yr)
     line1.set_data(r1[i:max(1, i - trail1):-1, 0], r1[i:max(1, i - trail1):-1, 1])
     line2.set_data(r2[i:max(1, i - trail2):-1, 0], r2[i:max(1, i - trail2):-1, 1])
     return line1, line2,
 
 
-def mplot(fign, x, y, xl, yl, clr, lbl):
+def mplot(fign, x, y, xl, yl, clr, lbl,alpha=1.0):
     py.figure(fign)
     py.xlabel(xl)
     py.ylabel(yl)
-    return py.plot(x, y, clr, linewidth=1.0, label=lbl)
+    return py.plot(x, y, clr, linewidth=1.0, label=lbl, alpha=alpha)
 
 
 def prepare():
+    # resetting the figures
+    py.close(1)
+    py.close(2)
+    py.close(3)
+    py.close(4)
+    canvas.flush_events()
+    global line1,line2,ttl
+    line1, line2, ttl = init()
+    try:
+        canvas.get_tk_widget().grid_forget()
+    except AttributeError:
+        pass
+
+    # retrieving data from UI
     data = get_data()
     m1, m2, m3, vv1, vv2, rr1, rr2, phi1, phi2 = data
     ti = 0  # initial time = 0
     tf = 120  # final time = 120 years
     N = 100 * tf  # 100 points per year
-    t = np.linspace(ti, tf, N)  # time array from ti to tf with N points
     h = t[2] - t[1]  # time step (uniform)
     RR = 1.496e11  # Normalizing distance in km (= 1 AU)
     MM = 6e24  # Normalizing mass
@@ -125,14 +142,40 @@ def prepare():
         AM2[i + 1] = AngMomentum(r2[i + 1, :], v2[i + 1, :], m2)
         AreaVal1[i + 1] = AreaVal1[i] + AreaCalc(r1[i, :], r1[i + 1, :])
         AreaVal2[i + 1] = AreaVal2[i] + AreaCalc(r2[i, :], r2[i + 1, :])
-    do_plot()
+    do_plot(KE1,PE1,AM1,AreaVal1)
 
 
-def do_plot():
+def do_plot(KE1,PE1,AM1,AreaVal1):
     anim = animation.FuncAnimation(fig, animate, init_func=init, frames=4000, interval=5, blit=True)
     canvas.flush_events()
-    canvas.draw()
     canvas.get_tk_widget().grid(row=0, column=4, rowspan=10)
+    canvas.draw()
+
+    G = 6.673e-11  # Gravitational Constant
+    RR = 1.496e11  # Normalizing distance in km (= 1 AU)
+    MM = 6e24  # Normalizing mass
+    FF = (G * MM ** 2) / RR ** 2  # Unit force
+    EE = FF * RR  # Unit energy
+
+    lbl = 'orbit'
+    py.plot(0, 0, 'ro', linewidth=7)
+    mplot(1, r1[:, 0], r1[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'blue', 'M1',0.1)
+    mplot(1, r2[:, 0], r2[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'green', 'M2',0.1)
+    py.ylim([-9, 9])
+
+    py.axis('equal')
+    mplot(2, t, KE1, r'Time, $t$ (years)', r'Kinetice Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'blue', 'KE')
+    mplot(2, t, PE1, r'Time, $t$ (years)', r'Potential Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'red', 'PE')
+    mplot(2, t, KE1 + PE1, r'Time, $t$ (years)', r'Total Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'black', 'Total Energy')
+    q = py.legend(loc=0)
+    q.draw_frame(False)
+    py.ylim([-180, 180])
+
+    mplot(3, t, AM1, r'Time, $t$ (years)', r'Angular Momentum', 'black', lbl)
+    py.ylim([4, 8])
+
+    mplot(4, t, AreaVal1, r'Time, $t$ (years)', r'Sweeped Area ($AU^2$)', 'black', lbl)
+    plt.show()
 
 
 # setup for the UI window
@@ -150,6 +193,7 @@ canvas = FigureCanvasTkAgg(fig, master=window)
 ax.plot(0, 0, 'o', markersize=9, markerfacecolor="#FDB813", markeredgecolor="#FD7813")
 line1, = ax.plot([], [], 'o-', color='blue', markevery=10000, markerfacecolor='#0077BE', lw=2)  # line for m1
 line2, = ax.plot([], [], 'o-', color='orange', markevery=10000, markerfacecolor='#f66338', lw=2)  # line for m2
+ttl = ax.text(0.24, 1.05, '', transform=ax.transAxes, va='center')
 
 # datatype of menu text
 clicked1 = tk.StringVar()
