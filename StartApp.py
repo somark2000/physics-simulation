@@ -1,10 +1,8 @@
-# imports
 import tkinter as tk
 from practice_window import PracticeWindow
 from course_window import CourseWindow
 
-
-class StartApp():
+class StartApp:
     def do_practice(self, window):
         practice = PracticeWindow()
         window.destroy()
@@ -15,15 +13,7 @@ class StartApp():
         window.destroy()
         course.run()
 
-    def help(self):
-        tk.messagebox.showinfo(title="Info", message="Dear user!\n With this app you have the possibility both to "
-                                                     "learn and practice different aspects of physics. First you are "
-                                                     "advised to chose our courses to master the knowledge of kinematics"
-                                                     "then you cand proceed to he practice part where you can explore on"
-                                                     " your own the phenomenons learned before.\n Good luck!")
-
     def run(self):
-        # setup for the UI window
         window = tk.Tk()
         window.title("Home")
         window.geometry('800x500')
@@ -46,7 +36,6 @@ class StartApp():
         info_butt.place(relx=0.95, rely=0.05, anchor=tk.CENTER)
 
         window.mainloop()
-
 
 # show the window
 if __name__ == "__main__":

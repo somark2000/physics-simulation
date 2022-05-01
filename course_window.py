@@ -14,5 +14,11 @@ class CourseWindow():
 
         bg_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         welcome_label.place(relx=0.5, rely=0.25, anchor=tk.CENTER)
+        home = tk.PhotoImage(file="images/home.png")
+        home_butt = tk.Button(image=home, bg='#0e1c1d', border=0, command=lambda: self.home(window))
+        home_butt.place(relx=0.95, rely=0.05, anchor=tk.CENTER)
 
         window.mainloop()
+
+    def home(self,window):
+        window.destroy()

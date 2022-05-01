@@ -254,3 +254,7 @@ class FreeFall():
 #
 # # show the window
 # window.mainloop()
+# show the window
+if __name__ == "__main__":
+    app = FreeFall()
+    app.run()
