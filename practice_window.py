@@ -1,18 +1,19 @@
 # imports
 import tkinter as tk
+from motions.free_fall import FreeFall
 
 class PracticeWindow():
     def run(self):
         # setup for the UI window
         window = tk.Tk()
-        window.title("Hodeeeme")
+        window.title("Practice")
         window.geometry('800x500')
         bg = tk.PhotoImage(file="images/bg.png")
         bg_label = tk.Label(window, image=bg)
         welcome_label = tk.Label(window, text="Practice")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white')
 
-        p1_butt = tk.Button(text='Free fall', command=self.do_freefall)
+        p1_butt = tk.Button(text='Free fall', command= lambda: self.do_freefall(window))
         p1_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
         p2_butt = tk.Button(text='Throw down', command=self.do_throwdown)
         p2_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
@@ -34,8 +35,10 @@ class PracticeWindow():
         window.mainloop()
 
 
-    def do_freefall(self):
-        pass
+    def do_freefall(self,window):
+        freefall=FreeFall()
+        window.destroy()
+        freefall.run()
 
     def do_throwup(self):
         pass

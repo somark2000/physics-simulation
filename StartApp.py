@@ -1,6 +1,7 @@
 # imports
 import tkinter as tk
 from practice_window import PracticeWindow
+from course_window import CourseWindow
 
 
 class StartApp():
@@ -10,7 +11,9 @@ class StartApp():
         practice.run()
 
     def do_courses(self, window):
-        pass
+        course = CourseWindow()
+        window.destroy()
+        course.run()
 
     def help(self):
         tk.messagebox.showinfo(title="Info", message="Dear user!\n With this app you have the possibility both to "
