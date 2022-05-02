@@ -15,7 +15,10 @@ class StartApp:
         course.run()
 
     def help(self):
-        messagebox.showinfo(title="Info", message="Dear User!\n ")
+        messagebox.showinfo(title="Info", message="Dear User!\n With this app you will be able to both learn the ground"
+                                                  "principles of kinematics by choosing the provided Course and to "
+                                                  "explore new phenomenons by choosing the Practice option\n"
+                                                  "Have fun!")
 
     def run(self):
         window = tk.Tk()

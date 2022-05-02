@@ -121,54 +121,6 @@ class FreeFall:
     def get_t(self):
         return self.t_scale.get()
 
-    # # setup for the UI window
-    # window = tk.Tk()
-    # window.title("Free fall")
-    # h_label = tk.Label(window, text="Select the initial height")
-    # h_scale = tk.Scale(window, from_=0, to=300, length=600, tickinterval=15, orient=tk.HORIZONTAL)
-    # m_label = tk.Label(window, text="Select the projectile mass")
-    # m_scale = tk.Scale(window, from_=0, to=20, length=600, tickinterval=1, orient=tk.HORIZONTAL)
-    # t_label = tk.Label(window, text="Select the plotting time")
-    # t_scale = tk.Scale(window, from_=0, to=30, length=600, tickinterval=2, orient=tk.HORIZONTAL,resolution=0.01)
-    #
-    # fig, ax = plt.subplots(2, 2, figsize=(15, 7))
-    #
-    # ax[0, 0].set_xlabel("Time (s)")
-    # ax[0, 0].set_ylabel("Height (m)")
-    # ax[0, 0].grid(True)
-    # ax1 = ax[0, 0].twinx()
-    #
-    # ax[0, 1].set_xlabel("Time (s)")
-    # ax[0, 1].set_ylabel("Potential Energy (J)")
-    # ax[0, 1].grid(True)
-    # ax[0, 1].legend(loc='lower center', frameon=False, ncol=2)
-    # ax2 = ax[0, 1].twinx()
-    # ax2.set_ylabel("Kinetic Energy (J)", color="r")
-    # ax2.tick_params(axis='y', labelcolor='r')
-    # ax2.legend(loc='upper center', frameon=False, ncol=2)
-    #
-    # ax[1, 1].set_xlabel("Height (m)")
-    # ax[1, 1].set_ylabel("Kinetic Energy (J)")
-    # ax[1, 1].grid(True)
-    # ax[1, 1].legend(loc='lower center', frameon=False, ncol=2)
-    # ax3 = ax[1, 1].twinx()
-    # ax3.set_ylabel("Potential Energy (J)", color="g")
-    # ax3.tick_params(axis='y', labelcolor='g')
-    # ax3.legend(loc='upper center', frameon=False, ncol=2)
-    #
-    # ax[1, 0].set_xlabel("Time (s)")
-    # ax[1, 0].set_ylabel("Velocity (m/s)")
-    # ax[1, 0].grid(True)
-    # ax[1, 0].legend(loc='lower center', frameon=False, ncol=2)
-    # ax4 = ax[1, 0].twinx()
-    # ax4.set_ylabel("KE/PE", color="r")
-    # ax4.tick_params(axis='y', labelcolor='r')
-    # ax4.legend(loc='upper center', frameon=False, ncol=2)
-    # ax_1 = ax[0, 0]
-    # ax_2 = ax[0, 1]
-    # ax_3 = ax[1, 0]
-    # ax_4 = ax[1, 1]
-
     def do_calculations(self):
         self.ax1.cla()
         self.ax2.cla()
@@ -260,24 +212,7 @@ class FreeFall:
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(row=4, column=0, ipadx=20, ipady=20, columnspan=2)
 
-
-# canvas = FigureCanvasTkAgg(fig, master=window)
-# btn_plot = tk.Button(text="Plot!", command=do_calculations)
-# btn_adjust = tk.Button(text="Adjust to ground level", command=adjust)
-#
-# # put all the UI elements on the interface
-# h_label.grid(row=0, column=0)
-# h_scale.grid(row=0, column=1)
-# m_label.grid(row=1, column=0)
-# m_scale.grid(row=1, column=1)
-# t_label.grid(row=2, column=0)
-# t_scale.grid(row=2, column=1)
-# btn_plot.grid(row=3, column=0, pady=20)
-# btn_adjust.grid(row=3, column=1, pady=20)
-#
 # # show the window
 # window.mainloop()
 # show the window
-# if __name__ == "__main__":
-#     app = FreeFall()
-#     app.run()
+

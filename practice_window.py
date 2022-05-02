@@ -1,7 +1,10 @@
 # imports
 import tkinter as tk
 from motions.free_fall import FreeFall
-
+from motions.vertical_throw_down import VerticalThrowDown
+from motions.vertical_throw_up import VerticalThrowUp
+from motions.throw_at_angle import ThrowAtAngle
+from motions.three_body_UI import ThreeBody
 
 class PracticeWindow:
 
@@ -45,16 +48,24 @@ class PracticeWindow:
         freefall.run()
 
     def do_throwup(self, window):
+        throwup = VerticalThrowUp()
         window.destroy()
+        throwup.run()
 
     def do_throwdown(self, window):
+        throwdown = VerticalThrowDown()
         window.destroy()
+        throwdown.run()
 
     def do_throwatangle(self, window):
+        throwangle = ThrowAtAngle()
         window.destroy()
+        throwangle.run()
 
     def do_threebody(self, window):
+        threebody = ThreeBody()
         window.destroy()
+        threebody.run()
 
     def home(self, window):
         window.destroy()
