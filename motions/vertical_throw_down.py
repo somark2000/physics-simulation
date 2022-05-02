@@ -14,6 +14,9 @@ f_plot = False
 class VerticalThrowDown:
 
     def __init__(self):
+        self.home_butt = None
+        self.app = None
+        self.practice = None
         self.btn_adjust = None
         self.btn_plot = None
         self.canvas = None
@@ -37,7 +40,9 @@ class VerticalThrowDown:
         self.h_label = None
         self.window = None
 
-    def run(self):
+    def run(self,prcatice,app):
+        self.practice = prcatice
+        self.app = app
         # setup for the UI window
         self.window = tk.Tk()
         self.window.title("Vertical throw downwards")
@@ -100,6 +105,7 @@ class VerticalThrowDown:
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.window)
         self.btn_plot = tk.Button(text="Plot!", command=self.do_calculations, bg='#0e1c1d', font=("Arial", 20), fg='white', border=0)
         self.btn_adjust = tk.Button(text="Adjust to ground level", command=self.adjust, bg='#0e1c1d', font=("Arial", 20), fg='white', border=0)
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', border=0,fg="white", command=lambda: self.home(self.window))
 
         # put all the UI elements on the interface
         self.h_label.grid(row=0, column=0)
@@ -112,6 +118,7 @@ class VerticalThrowDown:
         self.v_scale.grid(row=3, column=1, columnspan=3)
         self.btn_plot.grid(row=4, column=0, pady=20, columnspan=2)
         self.btn_adjust.grid(row=4, column=1, pady=20, columnspan=2)
+        self.home_butt.grid(row=4, column=3, pady=20)
 
         # show the window
         self.window.mainloop()
@@ -231,7 +238,6 @@ class VerticalThrowDown:
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(row=5, column=0, ipadx=5, ipady=5, columnspan=4)
 
-
-# if __name__ == "__main__":
-#     app = VerticalThroUp()
-#     app.run()
+    def home(self, window):
+        window.destroy()
+        self.practice.run(self.app)

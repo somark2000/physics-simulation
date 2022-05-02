@@ -6,10 +6,19 @@ from motions.vertical_throw_up import VerticalThrowUp
 from motions.throw_at_angle import ThrowAtAngle
 from motions.three_body_UI import ThreeBody
 
-class PracticeWindow:
 
-    def run(self):
+class PracticeWindow:
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(PracticeWindow, cls).__new__(cls)
+        return cls.instance
+
+    def __init__(self):
+        self.app = None
+
+    def run(self, app):
         # setup for the UI window
+        self.app = app
         window = tk.Tk()
         window.title("Practice")
         window.geometry('800x500')
@@ -44,28 +53,34 @@ class PracticeWindow:
 
     def do_freefall(self, window):
         freefall = FreeFall()
+        practice = PracticeWindow()
         window.destroy()
-        freefall.run()
+        freefall.run(practice, self.app)
 
     def do_throwup(self, window):
         throwup = VerticalThrowUp()
+        practice = PracticeWindow()
         window.destroy()
-        throwup.run()
+        throwup.run(practice, self.app)
 
     def do_throwdown(self, window):
         throwdown = VerticalThrowDown()
+        practice = PracticeWindow()
         window.destroy()
-        throwdown.run()
+        throwdown.run(practice, self.app)
 
     def do_throwatangle(self, window):
         throwangle = ThrowAtAngle()
+        practice = PracticeWindow()
         window.destroy()
-        throwangle.run()
+        throwangle.run(practice, self.app)
 
     def do_threebody(self, window):
         threebody = ThreeBody()
+        practice = PracticeWindow()
         window.destroy()
-        threebody.run()
+        threebody.run(practice, self.app)
 
     def home(self, window):
         window.destroy()
+        self.app.run()

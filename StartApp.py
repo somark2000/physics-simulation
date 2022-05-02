@@ -1,18 +1,27 @@
 import tkinter as tk
 from tkinter import messagebox
+
 from practice_window import PracticeWindow
 from course_window import CourseWindow
 
+# @singleton
 class StartApp:
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(StartApp, cls).__new__(cls)
+        return cls.instance
+
     def do_practice(self, window):
         practice = PracticeWindow()
+        app = StartApp()
         window.destroy()
-        practice.run()
+        practice.run(app)
 
     def do_courses(self, window):
         course = CourseWindow()
+        app = StartApp()
         window.destroy()
-        course.run()
+        course.run(app)
 
     def help(self):
         messagebox.showinfo(title="Info", message="Dear User!\n With this app you will be able to both learn the ground"
@@ -43,6 +52,7 @@ class StartApp:
         info_butt.place(relx=0.95, rely=0.05, anchor=tk.CENTER)
 
         window.mainloop()
+
 
 # show the window
 if __name__ == "__main__":

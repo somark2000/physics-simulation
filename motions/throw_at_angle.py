@@ -14,6 +14,9 @@ f_plot = False
 
 class ThrowAtAngle:
     def __init__(self):
+        self.app = None
+        self.practice = None
+        self.home_butt = None
         self.btn_adjust = None
         self.btn_plot = None
         self.canvas = None
@@ -39,7 +42,9 @@ class ThrowAtAngle:
         self.h_label = None
         self.window = None
 
-    def run(self):
+    def run(self,practice,app):
+        self.practice = practice
+        self.app = app
         # setup for the UI window
         self.window = tk.Tk()
         self.window.title("Throw at an angle")
@@ -121,6 +126,8 @@ class ThrowAtAngle:
         self.phi_scale.grid(row=4, column=1, columnspan=3)
         self.btn_plot.grid(row=5, column=0, pady=20, columnspan=2)
         self.btn_adjust.grid(row=5, column=1, pady=20, columnspan=2)
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', fg="white", border=0, command=lambda: self.home(self.window))
+        self.home_butt.grid(row=5, column=3, pady=20)
 
         # show the window
         self.window.mainloop()
@@ -238,3 +245,7 @@ class ThrowAtAngle:
         self.canvas.flush_events()
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(row=6, column=0, ipadx=5, ipady=5, columnspan=4)
+
+    def home(self, window):
+        window.destroy()
+        self.practice.run(self.app)

@@ -19,6 +19,9 @@ options = [1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
 
 class ThreeBody:
     def __init__(self):
+        self.app = None
+        self.practice = None
+        self.home_butt = None
         self.tm_yr = None
         self.trail2 = None
         self.trail1 = None
@@ -72,7 +75,9 @@ class ThreeBody:
         self.tf = None
         self.ti = None
 
-    def run(self):
+    def run(self,practice, app):
+        self.practice = practice
+        self.app = app
         global options
         # positions
         self.ti = 0  # initial time = 0
@@ -215,6 +220,8 @@ class ThreeBody:
         self.phi2_scale.grid(row=10, column=1)
         self.phi2_unit.grid(row=10, column=2)
         self.btn_plot.grid(row=12, column=1)
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', fg="white", border=0, command=lambda: self.home(self.window))
+        self.home_butt.grid(row=12, column=2, pady=20)
 
         # show the window
         self.window.mainloop()
@@ -367,3 +374,7 @@ class ThreeBody:
 
         self.mplot(4, self.t, AreaVal1, r'Time, $t$ (years)', r'Sweeped Area ($AU^2$)', 'black', lbl)
         plt.show()
+
+    def home(self, window):
+        window.destroy()
+        self.practice.run(self.app)

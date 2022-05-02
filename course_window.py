@@ -1,8 +1,13 @@
 # imports
 import tkinter as tk
 
+
 class CourseWindow():
-    def run(self):
+    def __init__(self):
+        self.app = None
+
+    def run(self, app):
+        self.app = app
         # setup for the UI window
         window = tk.Tk()
         window.title("Courses")
@@ -20,5 +25,6 @@ class CourseWindow():
 
         window.mainloop()
 
-    def home(self,window):
+    def home(self, window):
         window.destroy()
+        self.app.run()

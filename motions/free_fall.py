@@ -15,6 +15,9 @@ f_plot = False
 class FreeFall:
 
     def __init__(self):
+        self.app = None
+        self.home_butt = None
+        self.practice = None
         self.ax4 = None
         self.ax3 = None
         self.ax2 = None
@@ -36,7 +39,9 @@ class FreeFall:
         self.window = None
         self.canvas = None
 
-    def run(self):
+    def run(self, practice, app):
+        self.practice = practice
+        self.app = app
         # setup for the UI window
         self.window = tk.Tk()
         self.window.configure(bg='#0e1c1d')
@@ -97,6 +102,7 @@ class FreeFall:
 
         self.btn_plot.configure(command=self.do_calculations)
         self.btn_adjust.configure(command=self.adjust)
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', border=0,fg="white", command=lambda: self.home(self.window))
 
         # put all the UI elements on the interface
         self.h_label.grid(row=0, column=0)
@@ -107,6 +113,7 @@ class FreeFall:
         self.t_scale.grid(row=2, column=1)
         self.btn_plot.grid(row=3, column=0, pady=20)
         self.btn_adjust.grid(row=3, column=1, pady=20)
+        self.home_butt.grid(row=3, column=2, pady=20)
 
         # show the window
         self.window.mainloop()
@@ -210,9 +217,8 @@ class FreeFall:
         f_plot = True
         self.canvas.flush_events()
         self.canvas.draw()
-        self.canvas.get_tk_widget().grid(row=4, column=0, ipadx=20, ipady=20, columnspan=2)
+        self.canvas.get_tk_widget().grid(row=4, column=0, ipadx=20, ipady=20, columnspan=3)
 
-# # show the window
-# window.mainloop()
-# show the window
-
+    def home(self, window):
+        window.destroy()
+        self.practice.run(self.app)
