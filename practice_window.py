@@ -1,6 +1,6 @@
 # imports
 import tkinter as tk
-# from motions.free_fall import FreeFall
+from motions.free_fall import FreeFall
 
 
 class PracticeWindow:

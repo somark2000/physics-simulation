@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from practice_window import PracticeWindow
 from course_window import CourseWindow
 
@@ -12,6 +13,9 @@ class StartApp:
         course = CourseWindow()
         window.destroy()
         course.run()
+
+    def help(self):
+        messagebox.showinfo(title="Info", message="Dear User!\n ")
 
     def run(self):
         window = tk.Tk()

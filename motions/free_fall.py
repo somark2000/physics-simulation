@@ -8,29 +8,60 @@ from formula import energy
 from formula import kinematics
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 
-
 # verification flags
 f_plot = False
 
-class FreeFall():
-    fig, ax = plt.subplots(2, 2, figsize=(15, 7))
-    window = tk.Tk()
-    h_label = tk.Label(window, text="Select the initial height")
-    h_scale = tk.Scale(window, from_=0, to=300, length=600, tickinterval=15, orient=tk.HORIZONTAL)
-    m_label = tk.Label(window, text="Select the projectile mass")
-    m_scale = tk.Scale(window, from_=0, to=20, length=600, tickinterval=1, orient=tk.HORIZONTAL)
-    t_label = tk.Label(window, text="Select the plotting time")
-    t_scale = tk.Scale(window, from_=0, to=30, length=600, tickinterval=2, orient=tk.HORIZONTAL, resolution=0.01)
-    ax_1 = ax[0, 0]
-    ax_2 = ax[0, 1]
-    ax_3 = ax[1, 0]
-    ax_4 = ax[1, 1]
-    canvas = FigureCanvasTkAgg(fig, master=window)
-    btn_plot = tk.Button(text="Plot!")
-    btn_adjust = tk.Button(text="Adjust to ground level")
+
+class FreeFall:
+
+    def __init__(self):
+        self.ax4 = None
+        self.ax3 = None
+        self.ax2 = None
+        self.ax1 = None
+        self.btn_adjust = None
+        self.btn_plot = None
+        self.ax_4 = None
+        self.ax_3 = None
+        self.ax_2 = None
+        self.ax_1 = None
+        self.t_scale = None
+        self.t_label = None
+        self.m_label = None
+        self.m_scale = None
+        self.h_scale = None
+        self.h_label = None
+        self.fig = None
+        self.ax = None
+        self.window = None
+        self.canvas = None
 
     def run(self):
         # setup for the UI window
+        self.window = tk.Tk()
+        self.window.configure(bg='#0e1c1d')
+        self.window.configure(width=1200)
+        self.h_label = tk.Label(self.window, text="Select the initial height", bg='#0e1c1d', font=("Arial", 16),
+                                fg='white', border=0)
+        self.h_scale = tk.Scale(self.window, from_=0, to=300, length=600, tickinterval=15, orient=tk.HORIZONTAL,
+                                bg='#0e1c1d', font=("Arial", 10), fg='white', bd=0, highlightthickness=0)
+        self.m_label = tk.Label(self.window, text="Select the projectile mass", bg='#0e1c1d', font=("Arial", 16),
+                                fg='white', border=0)
+        self.m_scale = tk.Scale(self.window, from_=0, to=20, length=600, tickinterval=1, orient=tk.HORIZONTAL,
+                                bg='#0e1c1d', font=("Arial", 10),fg='white', bd=0, highlightthickness=0)
+        self.t_label = tk.Label(self.window, text="Select the plotting time", bg='#0e1c1d', font=("Arial", 16),
+                                fg='white', border=0)
+        self.t_scale = tk.Scale(self.window, from_=0, to=30, length=600, tickinterval=2, orient=tk.HORIZONTAL,
+                                bg='#0e1c1d', resolution=0.01, font=("Arial", 10), fg='white', bd=0, highlightthickness=0)
+        self.fig, self.ax = plt.subplots(2, 2, figsize=(15, 7))
+        self.ax_1 = self.ax[0, 0]
+        self.ax_2 = self.ax[0, 1]
+        self.ax_3 = self.ax[1, 0]
+        self.ax_4 = self.ax[1, 1]
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.window)
+        self.btn_plot = tk.Button(text="Plot!", bg='#0e1c1d', font=("Arial", 20), fg='white', border=0)
+        self.btn_adjust = tk.Button(text="Adjust to ground level", bg='#0e1c1d', font=("Arial", 20), fg='white',
+                                    border=0)
         self.window.title("Free fall")
         self.ax[0, 0].set_xlabel("Time (s)")
         self.ax[0, 0].set_ylabel("Height (m)")
@@ -80,69 +111,63 @@ class FreeFall():
         # show the window
         self.window.mainloop()
 
-
-
     # functions to read the input data
     def get_h(self):
         return self.h_scale.get()
 
-
     def get_m(self):
         return self.m_scale.get()
-
 
     def get_t(self):
         return self.t_scale.get()
 
-
-# # setup for the UI window
-# window = tk.Tk()
-# window.title("Free fall")
-# h_label = tk.Label(window, text="Select the initial height")
-# h_scale = tk.Scale(window, from_=0, to=300, length=600, tickinterval=15, orient=tk.HORIZONTAL)
-# m_label = tk.Label(window, text="Select the projectile mass")
-# m_scale = tk.Scale(window, from_=0, to=20, length=600, tickinterval=1, orient=tk.HORIZONTAL)
-# t_label = tk.Label(window, text="Select the plotting time")
-# t_scale = tk.Scale(window, from_=0, to=30, length=600, tickinterval=2, orient=tk.HORIZONTAL,resolution=0.01)
-#
-# fig, ax = plt.subplots(2, 2, figsize=(15, 7))
-#
-# ax[0, 0].set_xlabel("Time (s)")
-# ax[0, 0].set_ylabel("Height (m)")
-# ax[0, 0].grid(True)
-# ax1 = ax[0, 0].twinx()
-#
-# ax[0, 1].set_xlabel("Time (s)")
-# ax[0, 1].set_ylabel("Potential Energy (J)")
-# ax[0, 1].grid(True)
-# ax[0, 1].legend(loc='lower center', frameon=False, ncol=2)
-# ax2 = ax[0, 1].twinx()
-# ax2.set_ylabel("Kinetic Energy (J)", color="r")
-# ax2.tick_params(axis='y', labelcolor='r')
-# ax2.legend(loc='upper center', frameon=False, ncol=2)
-#
-# ax[1, 1].set_xlabel("Height (m)")
-# ax[1, 1].set_ylabel("Kinetic Energy (J)")
-# ax[1, 1].grid(True)
-# ax[1, 1].legend(loc='lower center', frameon=False, ncol=2)
-# ax3 = ax[1, 1].twinx()
-# ax3.set_ylabel("Potential Energy (J)", color="g")
-# ax3.tick_params(axis='y', labelcolor='g')
-# ax3.legend(loc='upper center', frameon=False, ncol=2)
-#
-# ax[1, 0].set_xlabel("Time (s)")
-# ax[1, 0].set_ylabel("Velocity (m/s)")
-# ax[1, 0].grid(True)
-# ax[1, 0].legend(loc='lower center', frameon=False, ncol=2)
-# ax4 = ax[1, 0].twinx()
-# ax4.set_ylabel("KE/PE", color="r")
-# ax4.tick_params(axis='y', labelcolor='r')
-# ax4.legend(loc='upper center', frameon=False, ncol=2)
-# ax_1 = ax[0, 0]
-# ax_2 = ax[0, 1]
-# ax_3 = ax[1, 0]
-# ax_4 = ax[1, 1]
-
+    # # setup for the UI window
+    # window = tk.Tk()
+    # window.title("Free fall")
+    # h_label = tk.Label(window, text="Select the initial height")
+    # h_scale = tk.Scale(window, from_=0, to=300, length=600, tickinterval=15, orient=tk.HORIZONTAL)
+    # m_label = tk.Label(window, text="Select the projectile mass")
+    # m_scale = tk.Scale(window, from_=0, to=20, length=600, tickinterval=1, orient=tk.HORIZONTAL)
+    # t_label = tk.Label(window, text="Select the plotting time")
+    # t_scale = tk.Scale(window, from_=0, to=30, length=600, tickinterval=2, orient=tk.HORIZONTAL,resolution=0.01)
+    #
+    # fig, ax = plt.subplots(2, 2, figsize=(15, 7))
+    #
+    # ax[0, 0].set_xlabel("Time (s)")
+    # ax[0, 0].set_ylabel("Height (m)")
+    # ax[0, 0].grid(True)
+    # ax1 = ax[0, 0].twinx()
+    #
+    # ax[0, 1].set_xlabel("Time (s)")
+    # ax[0, 1].set_ylabel("Potential Energy (J)")
+    # ax[0, 1].grid(True)
+    # ax[0, 1].legend(loc='lower center', frameon=False, ncol=2)
+    # ax2 = ax[0, 1].twinx()
+    # ax2.set_ylabel("Kinetic Energy (J)", color="r")
+    # ax2.tick_params(axis='y', labelcolor='r')
+    # ax2.legend(loc='upper center', frameon=False, ncol=2)
+    #
+    # ax[1, 1].set_xlabel("Height (m)")
+    # ax[1, 1].set_ylabel("Kinetic Energy (J)")
+    # ax[1, 1].grid(True)
+    # ax[1, 1].legend(loc='lower center', frameon=False, ncol=2)
+    # ax3 = ax[1, 1].twinx()
+    # ax3.set_ylabel("Potential Energy (J)", color="g")
+    # ax3.tick_params(axis='y', labelcolor='g')
+    # ax3.legend(loc='upper center', frameon=False, ncol=2)
+    #
+    # ax[1, 0].set_xlabel("Time (s)")
+    # ax[1, 0].set_ylabel("Velocity (m/s)")
+    # ax[1, 0].grid(True)
+    # ax[1, 0].legend(loc='lower center', frameon=False, ncol=2)
+    # ax4 = ax[1, 0].twinx()
+    # ax4.set_ylabel("KE/PE", color="r")
+    # ax4.tick_params(axis='y', labelcolor='r')
+    # ax4.legend(loc='upper center', frameon=False, ncol=2)
+    # ax_1 = ax[0, 0]
+    # ax_2 = ax[0, 1]
+    # ax_3 = ax[1, 0]
+    # ax_4 = ax[1, 1]
 
     def do_calculations(self):
         self.ax1.cla()
@@ -220,7 +245,6 @@ class FreeFall():
         self.ax4.plot(time, r, linestyle="--", color='r', label="KE/PE")
         self.plot_graph()
 
-
     def adjust(self):
         if f_plot:
             h = self.get_h()
@@ -228,7 +252,6 @@ class FreeFall():
             self.do_calculations()
         else:
             tk.messagebox.showerror("Error!", "First you need to plot!")
-
 
     def plot_graph(self):
         global f_plot
@@ -255,6 +278,6 @@ class FreeFall():
 # # show the window
 # window.mainloop()
 # show the window
-if __name__ == "__main__":
-    app = FreeFall()
-    app.run()
+# if __name__ == "__main__":
+#     app = FreeFall()
+#     app.run()
