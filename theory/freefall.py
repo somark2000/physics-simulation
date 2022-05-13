@@ -1,5 +1,6 @@
 # imports
 import tkinter as tk
+from motions.free_fall import FreeFall as ff
 
 
 class FreeFall:
@@ -12,13 +13,14 @@ class FreeFall:
         self.app = None
         self.practice = None
 
-    def run(self, practice, app):
+    def run(self, practice=None, app=None):
         self.practice = practice
         self.app = app
         # setup for the UI window
         self.window = tk.Tk()
         self.window.configure(bg='#0e1c1d')
         self.window.geometry("1200x900")
+        self.window.title("Course - Free Fall")
         # Create A Main frame
         self.main_frame = tk.Frame(self.window)
         self.main_frame.pack(fill=tk.BOTH, expand=1)
@@ -44,29 +46,61 @@ class FreeFall:
         second_frame = tk.Frame(self.my_canvas)
         second_frame.configure(bg='#0e1c1d')
         welcome_label = tk.Label(second_frame, text="Free Fall")
-        welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=20)
-        t1="""Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales sagittis enim, nec mattis nunc placerat sit amet. Sed egestas ornare turpis. Ut accumsan nulla eget orci molestie venenatis. Vestibulum lobortis lectus quis odio pharetra vehicula. Mauris at velit semper, dignissim nisl non, pulvinar velit. Nulla sit amet egestas mi, a vehicula leo. Mauris arcu sapien, porttitor vitae semper in, sodales rutrum odio. Donec rhoncus massa vel est lobortis tristique. Fusce eu pellentesque nisi, ac rhoncus turpis. Ut vehicula, mauris a mattis sagittis, odio diam vehicula nisl, a sollicitudin lorem ante in lacus."""
+        welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=40)
+        t1 = """Free fall is considered the simplest motion a projectile can make in an external gravitational field. 
+        In this case it is assumed that the projectile in the initial time is at rest at the initial altitude 𝑦0 = 
+        ℎ, so the initial velocity is considered to be zero 𝑣0 = 0 and the acceleration due to the downward 
+        direction of the gravitational field of the earth is 𝑎 = −𝑔, as shown below. """
         p1 = tk.Label(second_frame, text=t1)
-        p2 = tk.Label(second_frame, text=t1)
-        p3 = tk.Label(second_frame, text=t1)
-        p4 = tk.Label(second_frame, text=t1)
-        p5 = tk.Label(second_frame, text=t1)
-        
-        p1.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p2.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p3.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p4.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p5.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
+        t2 = """In this case, the equation of motion can be written as follows"""
+        p2 = tk.Label(second_frame, text=t2)
+        t3 = """Starting from the fact that speed is the first derivative of equation of motion, the velocity of the 
+        bullet can be written as follows """
+        p3 = tk.Label(second_frame, text=t3)
+        t4 = """In this case the time dependencies of both the altitude and the speed of the projectile are shown 
+        below """
+        p4 = tk.Label(second_frame, text=t4)
+        t5 = """For further practice click below"""
+        p5 = tk.Label(second_frame, text=t5)
+
+        p1.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+        p2.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+        p3.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+        p4.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+        p5.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+
+        img1 = tk.PhotoImage(file="images/ff1.png")
+        img1_lbl = tk.Label(second_frame, image=img1, pady=25)
+        img2 = tk.PhotoImage(file="images/ff2.png")
+        img2_lbl = tk.Label(second_frame, image=img2, pady=25)
+        img3 = tk.PhotoImage(file="images/ff3.png")
+        img3_lbl = tk.Label(second_frame, image=img3, pady=25)
+        img4 = tk.PhotoImage(file="images/ff4.png")
+        img4_lbl = tk.Label(second_frame, image=img4, pady=25)
+        buttom = tk.Button(second_frame, text='Practice', command=self.do_practice)
+        buttom.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
 
         # pack all the UI elements to the frame
         welcome_label.grid(row=0, column=0)
         p1.grid(row=1, column=0)
-        p2.grid(row=2, column=0)
-        p3.grid(row=3, column=0)
-        p4.grid(row=4, column=0)
-        p5.grid(row=5, column=0)
+        img1_lbl.grid(row=2, column=0)
+        p2.grid(row=3, column=0)
+        img2_lbl.grid(row=4, column=0)
+        p3.grid(row=5, column=0)
+        img3_lbl.grid(row=6, column=0)
+        p4.grid(row=7, column=0)
+        img4_lbl.grid(row=8, column=0)
+        p5.grid(row=9, column=0)
+        buttom.grid(row=10, column=0)
 
         # Add that New Frame a Window In The Canvas
         self.my_canvas.create_window((0, 0), window=second_frame, anchor="nw")
 
         self.window.mainloop()
+
+    def do_practice(self):
+        freefall = ff()
+        theory = FreeFall()
+        self.window.destroy()
+        freefall.run(theory, theory)
+        pass

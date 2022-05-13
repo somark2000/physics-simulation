@@ -23,7 +23,7 @@ class CourseWindow():
         window.geometry('800x500')
         bg = tk.PhotoImage(file="images/bg.png")
         bg_label = tk.Label(window, image=bg)
-        welcome_label = tk.Label(window, text="Practice")
+        welcome_label = tk.Label(window, text="Course")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white')
 
         p1_butt = tk.Button(text='Free fall', command=lambda: self.do_freefall(window))
