@@ -14,7 +14,7 @@ import ffmpeg
 f_plot = False
 
 # mass options
-options = [1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
+options = [1e20, 1e21,1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
 
 
 class ThreeBody:

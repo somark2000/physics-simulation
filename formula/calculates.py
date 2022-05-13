@@ -18,7 +18,6 @@ def quad(a, b, c):
 
 
 # Differential equation solvers
-# ===================================================================
 # def EulerSolver(t, r, v, h):
 #     z = np.zeros([2, 2])
 #     r1 = r + h * kin.dr_dt(t, r, v)

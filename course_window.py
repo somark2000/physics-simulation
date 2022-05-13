@@ -1,10 +1,10 @@
 # imports
 import tkinter as tk
-from motions.free_fall import FreeFall
-from motions.vertical_throw_down import VerticalThrowDown
-from motions.vertical_throw_up import VerticalThrowUp
-from motions.throw_at_angle import ThrowAtAngle
-from motions.three_body_UI import ThreeBody
+from theory.freefall import FreeFall
+from theory.vertical_throw_down import VerticalThrowDown
+from theory.vertical_throw_up import VerticalThrowUp
+from theory.throw_at_angle import ThrowAtAngle
+from theory.three_body import ThreeBody
 
 class CourseWindow():
     def __new__(cls):
@@ -19,7 +19,7 @@ class CourseWindow():
         # setup for the UI window
         self.app = app
         window = tk.Tk()
-        window.title("Practice")
+        window.title("Course")
         window.geometry('800x500')
         bg = tk.PhotoImage(file="images/bg.png")
         bg_label = tk.Label(window, image=bg)
@@ -37,7 +37,12 @@ class CourseWindow():
         p5_butt = tk.Button(text='Three Body Problem', command=lambda: self.do_threebody(window))
         p5_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
         home = tk.PhotoImage(file="images/home.png")
-        home_butt = tk.Button(image=home, bg='#0e1c1d', border=0, command=lambda: self.home(window))
+        returned = tk.PhotoImage(file="images/exit.jpg")
+        home_butt = tk.Button(bg='#0e1c1d', border=0)
+        if self.app != None:
+            home_butt.configure(image=home, command=lambda: self.home(window))
+        else:
+            home_butt.configure(image=returned, command=lambda: window.destroy())
 
         bg_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         welcome_label.place(relx=0.5, rely=0.25, anchor=tk.CENTER)

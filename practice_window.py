@@ -38,7 +38,12 @@ class PracticeWindow:
         p5_butt = tk.Button(text='Three Body Problem', command=lambda: self.do_threebody(window))
         p5_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
         home = tk.PhotoImage(file="images/home.png")
-        home_butt = tk.Button(image=home, bg='#0e1c1d', border=0, command=lambda: self.home(window))
+        returned = tk.PhotoImage(file="images/exit.jpg")
+        home_butt = tk.Button(bg='#0e1c1d', border=0)
+        if self.app != None:
+            home_butt.configure(image=home, command=lambda: self.home(window))
+        else:
+            home_butt.configure(image=returned, command=lambda: window.destroy())
 
         bg_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         welcome_label.place(relx=0.5, rely=0.25, anchor=tk.CENTER)
