@@ -19,6 +19,7 @@ class VerticalThrowUp:
         self.window = tk.Tk()
         self.window.configure(bg='#0e1c1d')
         self.window.geometry("1200x900")
+        self.window.title("Courese - Vertical throw up")
         # Create A Main frame
         self.main_frame = tk.Frame(self.window)
         self.main_frame.pack(fill=tk.BOTH, expand=1)
@@ -43,9 +44,9 @@ class VerticalThrowUp:
         # Create Another Frame INSIDE the Canvas
         second_frame = tk.Frame(self.my_canvas)
         second_frame.configure(bg='#0e1c1d')
-        welcome_label = tk.Label(second_frame, text="Free Fall")
+        welcome_label = tk.Label(second_frame, text="Throw Up")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=20)
-        t1 = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales sagittis enim, nec mattis nunc placerat sit amet. Sed egestas ornare turpis. Ut accumsan nulla eget orci molestie venenatis. Vestibulum lobortis lectus quis odio pharetra vehicula. Mauris at velit semper, dignissim nisl non, pulvinar velit. Nulla sit amet egestas mi, a vehicula leo. Mauris arcu sapien, porttitor vitae semper in, sodales rutrum odio. Donec rhoncus massa vel est lobortis tristique. Fusce eu pellentesque nisi, ac rhoncus turpis. Ut vehicula, mauris a mattis sagittis, odio diam vehicula nisl, a sollicitudin lorem ante in lacus."""
+        t1 = """This case is identical to the previous one, the only difference being that the initial speed is not zero and its upwards orientation determins the sign of the coefficient v0"""
         p1 = tk.Label(second_frame, text=t1)
         p2 = tk.Label(second_frame, text=t1)
         p3 = tk.Label(second_frame, text=t1)
