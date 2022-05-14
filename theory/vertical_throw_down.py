@@ -1,5 +1,7 @@
 # imports
 import tkinter as tk
+from theory.practice.vertical_throw_down import VerticalThrowDown as vt
+global gapp
 
 
 class VerticalThrowDown:
@@ -15,10 +17,13 @@ class VerticalThrowDown:
     def run(self, practice, app):
         self.practice = practice
         self.app = app
+        global gapp
+        gapp = app
         # setup for the UI window
         self.window = tk.Tk()
         self.window.configure(bg='#0e1c1d')
-        self.window.geometry("1200x900")
+        self.window.geometry("1300x900")
+        self.window.title("Course - Throw down")
         # Create A Main frame
         self.main_frame = tk.Frame(self.window)
         self.main_frame.pack(fill=tk.BOTH, expand=1)
@@ -43,30 +48,79 @@ class VerticalThrowDown:
         # Create Another Frame INSIDE the Canvas
         second_frame = tk.Frame(self.my_canvas)
         second_frame.configure(bg='#0e1c1d')
-        welcome_label = tk.Label(second_frame, text="Free Fall")
+        welcome_label = tk.Label(second_frame, text="Throw Down")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=20)
-        t1 = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales sagittis enim, nec mattis nunc placerat sit amet. Sed egestas ornare turpis. Ut accumsan nulla eget orci molestie venenatis. Vestibulum lobortis lectus quis odio pharetra vehicula. Mauris at velit semper, dignissim nisl non, pulvinar velit. Nulla sit amet egestas mi, a vehicula leo. Mauris arcu sapien, porttitor vitae semper in, sodales rutrum odio. Donec rhoncus massa vel est lobortis tristique. Fusce eu pellentesque nisi, ac rhoncus turpis. Ut vehicula, mauris a mattis sagittis, odio diam vehicula nisl, a sollicitudin lorem ante in lacus."""
+        t1 = """This case is identical to the previous one, the only difference being that the initial speed is not 
+                zero and its downwards orientation determines the sign of the coefficient v0 """
         p1 = tk.Label(second_frame, text=t1)
-        p2 = tk.Label(second_frame, text=t1)
-        p3 = tk.Label(second_frame, text=t1)
-        p4 = tk.Label(second_frame, text=t1)
-        p5 = tk.Label(second_frame, text=t1)
+        t2 = """As in this case, the equations of motion and the equations for the velocities for the downward throw 
+                are as follows """
+        p2 = tk.Label(second_frame, text=t2)
+        t3 = """Based on the equations above, it can be stated that the positions time dependency will be a parabola 
+                with a maximum not visible on the plot and the velocity will increase in absolut value with a constant 
+                rate from its initial value at the beginning"""
+        p3 = tk.Label(second_frame, text=t3)
 
-        p1.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p2.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p3.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p4.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
-        p5.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50)
+        p1.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+        p2.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+        p3.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)
+
+        img1 = tk.PhotoImage(file="images/vt.png")
+        img1_lbl = tk.Label(second_frame, image=img1, pady=25)
+        img2 = tk.PhotoImage(file="images/vtd1.png")
+        img2_lbl = tk.Label(second_frame, image=img2, pady=25)
+        buttom = tk.Button(second_frame, text='Practice', command=lambda: self.do_practice())
+        buttom.configure(bg='#0e1c1d', font=("Arial", 20), fg='white', pady=30, border=0)
+        fw_img = tk.PhotoImage(file="images/arrow_fw.png")
+        hm_img = tk.PhotoImage(file="images/home.png")
+        bck_img = tk.PhotoImage(file="images/arrow_bck.png")
+        forward_butt = tk.Button(second_frame, image=fw_img, command=lambda: self.do_throw_at_angle(), bg='#0e1c1d',
+                                 fg='white', pady=30, border=0)
+        back_butt = tk.Button(second_frame, image=bck_img, command=lambda: self.do_throwup(), bg='#0e1c1d',
+                              fg='white', pady=30, border=0)
+        home_butt = tk.Button(second_frame, image=hm_img, command=lambda: self.do_course(), bg='#0e1c1d', fg='white',
+                              pady=30, border=0)
 
         # pack all the UI elements to the frame
-        welcome_label.grid(row=0, column=0)
-        p1.grid(row=1, column=0)
-        p2.grid(row=2, column=0)
-        p3.grid(row=3, column=0)
-        p4.grid(row=4, column=0)
-        p5.grid(row=5, column=0)
+        welcome_label.grid(row=0, column=1)
+        p1.grid(row=1, column=1)
+        p2.grid(row=2, column=1)
+        img1_lbl.grid(row=3, column=1)
+        p3.grid(row=4, column=1)
+        img2_lbl.grid(row=5, column=1)
+        buttom.grid(row=10, column=1)
+        forward_butt.grid(row=0, column=2)
+        back_butt.grid(row=0, column=0)
+        home_butt.grid(row=1, column=0)
 
         # Add that New Frame a Window In The Canvas
         self.my_canvas.create_window((0, 0), window=second_frame, anchor="nw")
 
         self.window.mainloop()
+
+    def do_practice(self):
+        freefall = vt()
+        theory = VerticalThrowDown()
+        global gapp
+        theory.app = gapp
+        freefall.app = gapp
+        freefall.practice = theory
+        self.window.destroy()
+        freefall.run(theory, gapp)
+
+    def do_throw_at_angle(self):
+        self.practice.do_throwatangle(window=self.window)
+
+    def do_throwup(self):
+        print(self.practice)
+        if type(self.practice) is VerticalThrowDown:
+            global gapp
+            gapp.do_courses(self.window)
+        else:
+            self.practice.do_throwup(window=self.window)
+
+    def do_course(self):
+        global gapp
+        print(gapp)
+        print(self.practice)
+        gapp.do_courses(self.window)

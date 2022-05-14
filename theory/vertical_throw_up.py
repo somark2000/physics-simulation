@@ -51,14 +51,14 @@ class VerticalThrowUp:
         welcome_label = tk.Label(second_frame, text="Throw Up")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=30)
         t1 = """This case is identical to the previous one, the only difference being that the initial speed is not 
-        zero and its upwards orientation determins the sign of the coefficient v0 """
+        zero and its upwards orientation determines the sign of the coefficient v0 """
         p1 = tk.Label(second_frame, text=t1)
         t2 = """As in this case, the equations of motion and the equations for the velocities for the upward throw 
         are as follows """
         p2 = tk.Label(second_frame, text=t2)
         t3 = """Based on the equations above, it can be stated that the positions time dependency will be a parabola 
-        with a maximum higher than the initial posititon and the velocity will decrease with a conastant rate from 
-        its maximum value at the begining and will be 0 at the exact same moment the projectile will peak in its 
+        with a maximum higher than the initial position and the velocity will decrease with a constant rate from 
+        its maximum value at the beginning and will be 0 at the exact same moment the projectile will peak in its 
         height """
         p3 = tk.Label(second_frame, text=t3)
 
