@@ -1,6 +1,7 @@
 # imports
 import tkinter as tk
-from motions.free_fall import FreeFall as ff
+from theory.practice.freefall import FreeFall as ff
+global gapp
 
 
 class FreeFall:
@@ -13,13 +14,14 @@ class FreeFall:
         self.app = None
         self.practice = None
 
-    def run(self, practice=None, app=None):
+    def run(self, practice, app):
         self.practice = practice
-        self.app = app
+        global gapp
+        gapp = app
         # setup for the UI window
         self.window = tk.Tk()
         self.window.configure(bg='#0e1c1d')
-        self.window.geometry("1200x900")
+        self.window.geometry("1300x900")
         self.window.title("Course - Free Fall")
         # Create A Main frame
         self.main_frame = tk.Frame(self.window)
@@ -78,20 +80,26 @@ class FreeFall:
         img4 = tk.PhotoImage(file="images/ff4.png")
         img4_lbl = tk.Label(second_frame, image=img4, pady=25)
         buttom = tk.Button(second_frame, text='Practice', command=self.do_practice)
-        buttom.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
+        buttom.configure(bg='#0e1c1d', font=("Arial", 20), fg='white', pady=30, border=0)
+        fw_img = tk.PhotoImage(file="images/arrow_fw.png")
+        hm_img = tk.PhotoImage(file="images/home.png")
+        forward_butt = tk.Button(second_frame, image=fw_img, command=lambda: self.do_throwup(),bg='#0e1c1d', fg='white', pady=30, border=0)
+        home_butt = tk.Button(second_frame, image=hm_img, command=lambda: self.do_course(),bg='#0e1c1d', fg='white', pady=30, border=0)
 
         # pack all the UI elements to the frame
-        welcome_label.grid(row=0, column=0)
-        p1.grid(row=1, column=0)
-        img1_lbl.grid(row=2, column=0)
-        p2.grid(row=3, column=0)
-        img2_lbl.grid(row=4, column=0)
-        p3.grid(row=5, column=0)
-        img3_lbl.grid(row=6, column=0)
-        p4.grid(row=7, column=0)
-        img4_lbl.grid(row=8, column=0)
-        p5.grid(row=9, column=0)
-        buttom.grid(row=10, column=0)
+        welcome_label.grid(row=0, column=1)
+        p1.grid(row=1, column=1, columnspan=3)
+        img1_lbl.grid(row=2, column=1)
+        p2.grid(row=3, column=1)
+        img2_lbl.grid(row=4, column=1)
+        p3.grid(row=5, column=1)
+        img3_lbl.grid(row=6, column=1)
+        p4.grid(row=7, column=1)
+        img4_lbl.grid(row=8, column=1)
+        p5.grid(row=9, column=1)
+        buttom.grid(row=10, column=1)
+        forward_butt.grid(row=0, column=2)
+        home_butt.grid(row=0, column=0)
 
         # Add that New Frame a Window In The Canvas
         self.my_canvas.create_window((0, 0), window=second_frame, anchor="nw")
@@ -101,6 +109,22 @@ class FreeFall:
     def do_practice(self):
         freefall = ff()
         theory = FreeFall()
+        global gapp
+        theory.app = gapp
+        freefall.app = gapp
+        freefall.practice = theory
         self.window.destroy()
-        freefall.run(theory, theory)
-        pass
+        freefall.run(theory, gapp)
+
+    def do_course(self):
+        global gapp
+        print(gapp)
+        print(self.practice)
+        gapp.do_courses(self.window)
+
+    def do_throwup(self):
+        if type(self.practice) is FreeFall:
+            global gapp
+            gapp.do_courses(self.window)
+        else:
+            self.practice.do_throwup(window=self.window)

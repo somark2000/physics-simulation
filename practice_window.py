@@ -6,6 +6,7 @@ from motions.vertical_throw_up import VerticalThrowUp
 from motions.throw_at_angle import ThrowAtAngle
 from motions.three_body_UI import ThreeBody
 
+global gapp
 
 class PracticeWindow:
     def __new__(cls):
@@ -14,36 +15,40 @@ class PracticeWindow:
         return cls.instance
 
     def __init__(self):
+        self.window = None
         self.app = None
 
     def run(self, app):
         # setup for the UI window
         self.app = app
-        window = tk.Tk()
-        window.title("Practice")
-        window.geometry('800x500')
+        global gapp
+        gapp = app
+        self.window = tk.Tk()
+        self.window.title("Practice")
+        self.window.geometry('800x500')
         bg = tk.PhotoImage(file="images/bg.png")
-        bg_label = tk.Label(window, image=bg)
-        welcome_label = tk.Label(window, text="Practice")
+        bg_label = tk.Label(self.window, image=bg)
+        welcome_label = tk.Label(self.window, text="Practice")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white')
 
-        p1_butt = tk.Button(text='Free fall', command=lambda: self.do_freefall(window))
+        p1_butt = tk.Button(text='Free fall', command=lambda: self.do_freefall(self.window))
         p1_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
-        p2_butt = tk.Button(text='Throw down', command=lambda: self.do_throwdown(window))
+        p2_butt = tk.Button(text='Throw down', command=lambda: self.do_throwdown(self.window))
         p2_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
-        p3_butt = tk.Button(text='Throw up', command=lambda: self.do_throwup(window))
+        p3_butt = tk.Button(text='Throw up', command=lambda: self.do_throwup(self.window))
         p3_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
-        p4_butt = tk.Button(text='Throw at an angle', command=lambda: self.do_throwatangle(window))
+        p4_butt = tk.Button(text='Throw at an angle', command=lambda: self.do_throwatangle(self.window))
         p4_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
-        p5_butt = tk.Button(text='Three Body Problem', command=lambda: self.do_threebody(window))
+        p5_butt = tk.Button(text='Three Body Problem', command=lambda: self.do_threebody(self.window))
         p5_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white')
         home = tk.PhotoImage(file="images/home.png")
         returned = tk.PhotoImage(file="images/exit.jpg")
         home_butt = tk.Button(bg='#0e1c1d', border=0)
-        if self.app != None:
-            home_butt.configure(image=home, command=lambda: self.home(window))
-        else:
-            home_butt.configure(image=returned, command=lambda: window.destroy())
+        home_butt.configure(image=home, command=lambda: self.home(self.window))
+        # if self.app != None:
+        #     home_butt.configure(image=home, command=lambda: self.home(window))
+        # else:
+        #     home_butt.configure(image=returned, command=lambda: window.destroy())
 
         bg_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         welcome_label.place(relx=0.5, rely=0.25, anchor=tk.CENTER)
@@ -54,38 +59,44 @@ class PracticeWindow:
         p5_butt.place(relx=0.5, rely=0.68, anchor=tk.CENTER)
         home_butt.place(relx=0.95, rely=0.05, anchor=tk.CENTER)
 
-        window.mainloop()
+        self.window.mainloop()
 
     def do_freefall(self, window):
+        global gapp
         freefall = FreeFall()
         practice = PracticeWindow()
         window.destroy()
-        freefall.run(practice, self.app)
+        freefall.run(practice, gapp)
 
     def do_throwup(self, window):
+        global gapp
         throwup = VerticalThrowUp()
         practice = PracticeWindow()
         window.destroy()
-        throwup.run(practice, self.app)
+        throwup.run(practice, gapp)
 
     def do_throwdown(self, window):
+        global gapp
         throwdown = VerticalThrowDown()
         practice = PracticeWindow()
         window.destroy()
-        throwdown.run(practice, self.app)
+        throwdown.run(practice, gapp)
 
     def do_throwatangle(self, window):
+        global gapp
         throwangle = ThrowAtAngle()
         practice = PracticeWindow()
         window.destroy()
-        throwangle.run(practice, self.app)
+        throwangle.run(practice, gapp)
 
     def do_threebody(self, window):
+        global gapp
         threebody = ThreeBody()
         practice = PracticeWindow()
         window.destroy()
-        threebody.run(practice, self.app)
+        threebody.run(practice, gapp)
 
     def home(self, window):
+        global gapp
         window.destroy()
-        self.app.run()
+        gapp.run()

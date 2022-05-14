@@ -6,6 +6,8 @@ from theory.vertical_throw_up import VerticalThrowUp
 from theory.throw_at_angle import ThrowAtAngle
 from theory.three_body import ThreeBody
 
+gapp=None
+
 class CourseWindow():
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -17,7 +19,8 @@ class CourseWindow():
 
     def run(self, app):
         # setup for the UI window
-        self.app = app
+        global gapp
+        gapp = app
         window = tk.Tk()
         window.title("Course")
         window.geometry('800x500')
@@ -39,10 +42,11 @@ class CourseWindow():
         home = tk.PhotoImage(file="images/home.png")
         returned = tk.PhotoImage(file="images/exit.jpg")
         home_butt = tk.Button(bg='#0e1c1d', border=0)
-        if self.app != None:
-            home_butt.configure(image=home, command=lambda: self.home(window))
-        else:
-            home_butt.configure(image=returned, command=lambda: window.destroy())
+        home_butt.configure(image=home, command=lambda: self.home(window))
+        # if self.app != None:
+        #     home_butt.configure(image=home, command=lambda: self.home(window))
+        # else:
+        #     home_butt.configure(image=returned, command=lambda: window.destroy())
 
         bg_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         welcome_label.place(relx=0.5, rely=0.25, anchor=tk.CENTER)
@@ -58,34 +62,45 @@ class CourseWindow():
     def do_freefall(self, window):
         freefall = FreeFall()
         practice = CourseWindow()
+        global gapp
+        practice.app = gapp
         window.destroy()
-        freefall.run(practice, self.app)
+        freefall.run(practice, gapp)
 
     def do_throwup(self, window):
         throwup = VerticalThrowUp()
         practice = CourseWindow()
+        global gapp
+        practice.app = gapp
         window.destroy()
-        throwup.run(practice, self.app)
+        throwup.run(practice, gapp)
 
     def do_throwdown(self, window):
         throwdown = VerticalThrowDown()
         practice = CourseWindow()
+        global gapp
+        practice.app = gapp
         window.destroy()
-        throwdown.run(practice, self.app)
+        throwdown.run(practice, gapp)
 
     def do_throwatangle(self, window):
         throwangle = ThrowAtAngle()
         practice = CourseWindow()
+        global gapp
+        practice.app = gapp
         window.destroy()
-        throwangle.run(practice, self.app)
+        throwangle.run(practice, gapp)
 
     def do_threebody(self, window):
         threebody = ThreeBody()
         practice = CourseWindow()
+        global gapp
+        practice.app = gapp
         window.destroy()
-        threebody.run(practice, self.app)
+        threebody.run(practice, gapp)
 
     def home(self, window):
+        global gapp
         window.destroy()
-        self.app.run()
+        gapp.run()
 
