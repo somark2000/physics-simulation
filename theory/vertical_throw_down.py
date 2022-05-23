@@ -50,15 +50,11 @@ class VerticalThrowDown:
         second_frame.configure(bg='#0e1c1d')
         welcome_label = tk.Label(second_frame, text="Throw Down")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=20)
-        t1 = """This case is identical to the previous one, the only difference being that the initial speed is not 
-                zero and its downwards orientation determines the sign of the coefficient v0 """
+        t1 = """This case is identical to the previous one, the only difference being that the initial speed is not zero and its downwards orientation determines the sign of the coefficient v0 """
         p1 = tk.Label(second_frame, text=t1)
-        t2 = """As in this case, the equations of motion and the equations for the velocities for the downward throw 
-                are as follows """
+        t2 = """As in this case, the equations of motion and the equations for the velocities for the downward throw are as follows """
         p2 = tk.Label(second_frame, text=t2)
-        t3 = """Based on the equations above, it can be stated that the positions time dependency will be a parabola 
-                with a maximum not visible on the plot and the velocity will increase in absolut value with a constant 
-                rate from its initial value at the beginning"""
+        t3 = """Based on the equations above, it can be stated that the positions time dependency will be a parabola with a maximum not visible on the plot and the velocity will increase in absolut value with a constant rate from its initial value at the beginning"""
         p3 = tk.Label(second_frame, text=t3)
 
         p1.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1100, padx=50, pady=25)

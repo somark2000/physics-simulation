@@ -52,36 +52,19 @@ class ThrowAtAngle:
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=20)
         middle_label = tk.Label(second_frame, text="Throw at an angle")
         middle_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=20)
-        t1 = """In projectile motion, horizontal and vertical motion are independent of each other,as neither 
-        movement affects the other. This is the principle of compound motion that Galileo established in 1638 and 
-        used to demonstrate the parabolic form of projectile motion. The horizontal and vertical components of a 
-        projectile's velocity are independent, so the ballistic trajectory is a parabola of constant acceleration, 
-        as in a spacecraft with constant acceleration in the absence of other external forces. On Earth, acceleration 
-        varies with altitude and direction with latitude/longitude. This results in an elliptical trajectory that is 
-        very close to a parabola when viewed on a small scale. Since in this system the acceleration occurs only in 
-        the vertical direction, the horizontal component of the velocity remains constant and corresponds to its 
-        initial value. The vertical component of the movement is nothing more than free fall, just as described in 
-        the previous chapter. The components of the acceleration are """
+        t1 = """In projectile motion, horizontal and vertical motion are independent of each other,as neither movement affects the other. This is the principle of compound motion that Galileo established in 1638 and used to demonstrate the parabolic form of projectile motion. The horizontal and vertical components of a projectile's velocity are independent, so the ballistic trajectory is a parabola of constant acceleration, as in a spacecraft with constant acceleration in the absence of other external forces. On Earth, acceleration varies with altitude and direction with latitude/longitude. This results in an elliptical trajectory that is very close to a parabola when viewed on a small scale. Since in this system the acceleration occurs only in the vertical direction, the horizontal component of the velocity remains constant and corresponds to its initial value. The vertical component of the movement is nothing more than free fall, just as described in the previous chapter. The components of the acceleration are """
         p1 = tk.Label(second_frame, text=t1)
-        t2 = """So the acceleration on the vertical axis is not zero, the velocity vector and the components can be 
-        written as follows"""
+        t2 = """So the acceleration on the vertical axis is not zero, the velocity vector and the components can be written as follows"""
         p2 = tk.Label(second_frame, text=t2)
-        t3 = """Because the velocities are nonzero on both the horizontal and vertical axes, there are separate 
-        equations for the x and y directions """
+        t3 = """Because the velocities are nonzero on both the horizontal and vertical axes, there are separate equations for the x and y directions """
         p3 = tk.Label(second_frame, text=t3)
-        t4 = """Rewriting these equations, one can find a function y(x) that represents the trajectory of the bullet 
-        without considering the time of plotting """
+        t4 = """Rewriting these equations, one can find a function y(x) that represents the trajectory of the bullet without considering the time of plotting """
         p4 = tk.Label(second_frame, text=t4)
-        t5 = """This case bears a close resemblance to the case discussed above, with the difference that an angle φ 
-        has been introduced between the horizontal axis and the orientation of the velocity vector. Because of this 
-        angle, the projectile also has an initial velocity component on the vertical axis, rather than just the 
-        horizontal axis """
+        t5 = """This case bears a close resemblance to the case discussed above, with the difference that an angle φ has been introduced between the horizontal axis and the orientation of the velocity vector. Because of this angle, the projectile also has an initial velocity component on the vertical axis, rather than just the horizontal axis """
         p5 = tk.Label(second_frame, text=t5)
-        t6 = """Because the velocities are nonzero on both the horizontal and vertical axes, there are separate 
-        equations for the x and y directions """
+        t6 = """Because the velocities are nonzero on both the horizontal and vertical axes, there are separate equations for the x and y directions """
         p6 = tk.Label(second_frame, text=t6)
-        t7 = """Rewriting these equations, one can find a function y(x) that represents the trajectory of the bullet 
-        without considering the time of plotting """
+        t7 = """Rewriting these equations, one can find a function y(x) that represents the trajectory of the bullet without considering the time of plotting """
         p7 = tk.Label(second_frame, text=t7)
 
         p1.configure(bg='#0e1c1d', font=("Arial", 18), fg='white', wraplength=1160, padx=30, pady=25)

@@ -7,8 +7,8 @@ from matplotlib import animation
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from formula.calculates import *
 from formula.kinematics import *
-from IPython.display import HTML
-import ffmpeg
+# from IPython.display import HTML
+# import ffmpeg
 
 # verification flags
 f_plot = False

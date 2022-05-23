@@ -49,18 +49,13 @@ class FreeFall:
         second_frame.configure(bg='#0e1c1d')
         welcome_label = tk.Label(second_frame, text="Free Fall")
         welcome_label.configure(bg='#0e1c1d', font=("Arial", 28), fg='white', pady=40)
-        t1 = """Free fall is considered the simplest motion a projectile can make in an external gravitational field. 
-        In this case it is assumed that the projectile in the initial time is at rest at the initial altitude 𝑦0 = 
-        ℎ, so the initial velocity is considered to be zero 𝑣0 = 0 and the acceleration due to the downward 
-        direction of the gravitational field of the earth is 𝑎 = −𝑔, as shown below. """
+        t1 = """Free fall is considered the simplest motion a projectile can make in an external gravitational field. In this case it is assumed that the projectile in the initial time is at rest at the initial altitude 𝑦0 = ℎ, so the initial velocity is considered to be zero 𝑣0 = 0 and the acceleration due to the downward direction of the gravitational field of the earth is 𝑎 = −𝑔, as shown below. """
         p1 = tk.Label(second_frame, text=t1)
         t2 = """In this case, the equation of motion can be written as follows"""
         p2 = tk.Label(second_frame, text=t2)
-        t3 = """Starting from the fact that speed is the first derivative of equation of motion, the velocity of the 
-        bullet can be written as follows """
+        t3 = """Starting from the fact that speed is the first derivative of equation of motion, the velocity of the bullet can be written as follows """
         p3 = tk.Label(second_frame, text=t3)
-        t4 = """In this case the time dependencies of both the altitude and the speed of the projectile are shown 
-        below """
+        t4 = """In this case the time dependencies of both the altitude and the speed of the projectile are shown below """
         p4 = tk.Label(second_frame, text=t4)
         t5 = """For further practice click below"""
         p5 = tk.Label(second_frame, text=t5)
