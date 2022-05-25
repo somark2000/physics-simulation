@@ -139,7 +139,7 @@ class ThrowAtAngle:
         freefall.app = gapp
         freefall.practice = theory
         self.window.destroy()
-        freefall.run(theory, gapp)
+        freefall.run(theory, gapp, h=100, m=1, v=20, phi=30, t=5)
 
     def do_threebody(self):
         self.practice.do_threebody(window=self.window)

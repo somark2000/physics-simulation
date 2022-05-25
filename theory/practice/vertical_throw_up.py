@@ -12,6 +12,7 @@ from formula import calculates
 f_plot = False
 global gapp
 
+
 class VerticalThrowUp:
 
     def __init__(self):
@@ -41,7 +42,7 @@ class VerticalThrowUp:
         self.h_label = None
         self.window = None
 
-    def run(self,practice,app):
+    def run(self, practice, app, h, m, v, t):
         self.practice = practice
         self.app = app
         global gapp
@@ -62,12 +63,18 @@ class VerticalThrowUp:
         self.t_label = tk.Label(self.window, text="Select the plotting time", bg='#0e1c1d', font=("Arial", 16),
                                 fg='white', border=0)
         self.t_scale = tk.Scale(self.window, from_=0, to=30, length=600, tickinterval=3, orient=tk.HORIZONTAL,
-                                resolution=0.01,bg='#0e1c1d', font=("Arial", 10), fg='white', bd=0, highlightthickness=0)
-        self.v_label = tk.Label(self.window, text="Select the initial velocity of the projectile", bg='#0e1c1d', font=("Arial", 16),
+                                resolution=0.01, bg='#0e1c1d', font=("Arial", 10), fg='white', bd=0,
+                                highlightthickness=0)
+        self.v_label = tk.Label(self.window, text="Select the initial velocity of the projectile", bg='#0e1c1d',
+                                font=("Arial", 16),
                                 fg='white', border=0)
         self.v_scale = tk.Scale(self.window, from_=0, to=60, length=600, tickinterval=3, orient=tk.HORIZONTAL,
                                 bg='#0e1c1d', font=("Arial", 10), fg='white', bd=0, highlightthickness=0)
 
+        self.h_scale.set(h)
+        self.m_scale.set(m)
+        self.v_scale.set(v)
+        self.t_scale.set(t)
         self.fig, self.ax = plt.subplots(2, 2, figsize=(15, 7))
 
         self.ax[0, 0].set_xlabel("Time (s)")
@@ -107,8 +114,10 @@ class VerticalThrowUp:
         self.ax_4 = self.ax[1, 1]
 
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.window)
-        self.btn_plot = tk.Button(text="Plot!", command=self.do_calculations, bg='#0e1c1d', font=("Arial", 20), fg='white', border=0)
-        self.btn_adjust = tk.Button(text="Adjust to ground level", command=self.adjust, bg='#0e1c1d', font=("Arial", 20), fg='white', border=0)
+        self.btn_plot = tk.Button(text="Plot!", command=self.do_calculations, bg='#0e1c1d', font=("Arial", 20),
+                                  fg='white', border=0)
+        self.btn_adjust = tk.Button(text="Adjust to ground level", command=self.adjust, bg='#0e1c1d',
+                                    font=("Arial", 20), fg='white', border=0)
 
         # put all the UI elements on the interface
         self.h_label.grid(row=0, column=0)
@@ -121,7 +130,8 @@ class VerticalThrowUp:
         self.v_scale.grid(row=3, column=1, columnspan=3)
         self.btn_plot.grid(row=4, column=0, pady=20, columnspan=2)
         self.btn_adjust.grid(row=4, column=1, pady=20, columnspan=2)
-        self.home_butt = tk.Button(text="Back", bg='#0e1c1d',fg="white", border=0, command=lambda: self.home(self.window))
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', fg="white", border=0,
+                                   command=lambda: self.home(self.window))
         self.home_butt.grid(row=4, column=3, pady=20)
 
         # show the window

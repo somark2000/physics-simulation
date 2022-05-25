@@ -74,7 +74,7 @@ class FreeFall:
         img3_lbl = tk.Label(second_frame, image=img3, pady=25)
         img4 = tk.PhotoImage(file="images/ff4.png")
         img4_lbl = tk.Label(second_frame, image=img4, pady=25)
-        buttom = tk.Button(second_frame, text='Practice', command=self.do_practice)
+        buttom = tk.Button(second_frame, text='Practice', command=lambda: self.do_practice())
         buttom.configure(bg='#0e1c1d', font=("Arial", 20), fg='white', pady=30, border=0)
         fw_img = tk.PhotoImage(file="images/arrow_fw.png")
         hm_img = tk.PhotoImage(file="images/home.png")
@@ -109,7 +109,7 @@ class FreeFall:
         freefall.app = gapp
         freefall.practice = theory
         self.window.destroy()
-        freefall.run(theory, gapp)
+        freefall.run(theory, gapp, m=1, h=20, t=2)
 
     def do_course(self):
         global gapp

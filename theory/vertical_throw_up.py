@@ -102,7 +102,7 @@ class VerticalThrowUp:
         freefall.app = gapp
         freefall.practice = theory
         self.window.destroy()
-        freefall.run(theory, gapp)
+        freefall.run(theory, gapp, h=20, m=1, v=10, t=3)
 
     def do_throwdown(self):
         self.practice.do_throwdown(window=self.window)

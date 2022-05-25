@@ -12,9 +12,13 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 f_plot = False
 global gapp
 
+
 class FreeFall:
 
     def __init__(self):
+        self.h = None
+        self.t = None
+        self.m = None
         self.app = None
         self.home_butt = None
         self.practice = None
@@ -39,8 +43,11 @@ class FreeFall:
         self.window = None
         self.canvas = None
 
-    def run(self, practice, app):
+    def run(self, practice, app, m, h, t):
         self.practice = practice
+        self.m = m
+        self.h = h
+        self.t = t
         global gapp
         gapp = app
         # setup for the UI window
@@ -54,11 +61,15 @@ class FreeFall:
         self.m_label = tk.Label(self.window, text="Select the projectile mass", bg='#0e1c1d', font=("Arial", 16),
                                 fg='white', border=0)
         self.m_scale = tk.Scale(self.window, from_=0, to=20, length=600, tickinterval=1, orient=tk.HORIZONTAL,
-                                bg='#0e1c1d', font=("Arial", 10),fg='white', bd=0, highlightthickness=0)
+                                bg='#0e1c1d', font=("Arial", 10), fg='white', bd=0, highlightthickness=0)
         self.t_label = tk.Label(self.window, text="Select the plotting time", bg='#0e1c1d', font=("Arial", 16),
                                 fg='white', border=0)
         self.t_scale = tk.Scale(self.window, from_=0, to=30, length=600, tickinterval=2, orient=tk.HORIZONTAL,
-                                bg='#0e1c1d', resolution=0.01, font=("Arial", 10), fg='white', bd=0, highlightthickness=0)
+                                bg='#0e1c1d', resolution=0.01, font=("Arial", 10), fg='white', bd=0,
+                                highlightthickness=0)
+        self.h_scale.set(self.h)
+        self.m_scale.set(self.m)
+        self.t_scale.set(self.t)
         self.fig, self.ax = plt.subplots(2, 2, figsize=(15, 7))
         self.ax_1 = self.ax[0, 0]
         self.ax_2 = self.ax[0, 1]
@@ -103,7 +114,8 @@ class FreeFall:
 
         self.btn_plot.configure(command=self.do_calculations)
         self.btn_adjust.configure(command=self.adjust)
-        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', border=0,fg="white", command=lambda: self.home(self.window), pady=30)
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', border=0, fg="white",
+                                   command=lambda: self.home(self.window), pady=30)
 
         # put all the UI elements on the interface
         self.h_label.grid(row=0, column=0)
