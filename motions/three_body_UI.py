@@ -270,6 +270,8 @@ class ThreeBody:
         py.close(2)
         py.close(3)
         py.close(4)
+        for i in range(10):
+            plt.close()
         self.canvas.flush_events()
         self.line1, self.line2, self.ttl = self.init()
         try:

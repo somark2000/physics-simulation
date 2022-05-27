@@ -14,7 +14,7 @@ import ffmpeg
 f_plot = False
 global gapp
 # mass options
-options = [1e20, 1e21,1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
+options = [1e20, 1e21, 1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
 
 
 class ThreeBody:
@@ -75,7 +75,7 @@ class ThreeBody:
         self.tf = None
         self.ti = None
 
-    def run(self,practice, app):
+    def run(self, practice, app, m1, m2, mc, s1, s2, s3, v1, v2, r1, r2, p1, p2):
         self.practice = practice
         self.app = app
         global options
@@ -113,12 +113,13 @@ class ThreeBody:
         self.ttl = self.ax.text(0.24, 1.05, '', transform=self.ax.transAxes, va='center')
 
         # datatype of menu text
+        global options
         self.clicked1 = tk.StringVar()
-        self.clicked1.set("1e24")
+        self.clicked1.set(options[s1])
         self.clicked2 = tk.StringVar()
-        self.clicked2.set("1e24")
+        self.clicked2.set(options[s2])
         self.clicked3 = tk.StringVar()
-        self.clicked3.set("1e24")
+        self.clicked3.set(options[s3])
 
         self.m1_label = tk.Label(self.window, text="Orbiting mass 1", bg='#0e1c1d', font=("Arial", 16),
                                  fg='white', border=0)
@@ -189,6 +190,15 @@ class ThreeBody:
                                   fg='white', border=0)
         self.btn_plot = tk.Button(text="Plot!", command=self.prepare, bg='#0e1c1d', font=("Arial", 20), fg='white',
                                   border=0)
+        self.m1_scale.set(m1)
+        self.m2_scale.set(m2)
+        self.m3_scale.set(mc)
+        self.v1_scale.set(v1)
+        self.v2_scale.set(v2)
+        self.r1_scale.set(r1)
+        self.r2_scale.set(r2)
+        self.phi1_scale.set(p1)
+        self.phi1_scale.set(p2)
 
         # put all the UI elements on the interface
         self.m1_label.grid(row=0, column=0)
@@ -222,7 +232,8 @@ class ThreeBody:
         self.phi2_scale.grid(row=10, column=1)
         self.phi2_unit.grid(row=10, column=2)
         self.btn_plot.grid(row=12, column=1)
-        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', fg="white", border=0, command=lambda: self.home(self.window))
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', fg="white", border=0,
+                                   command=lambda: self.home(self.window))
         self.home_butt.grid(row=12, column=2, pady=20)
 
         # show the window
@@ -272,6 +283,8 @@ class ThreeBody:
         py.close(2)
         py.close(3)
         py.close(4)
+        for i in range(10):
+            plt.close()
         self.canvas.flush_events()
         self.line1, self.line2, self.ttl = self.init()
         try:
@@ -378,6 +391,8 @@ class ThreeBody:
         plt.show()
 
     def home(self, window):
+        for i in range(10):
+            plt.close()
         window.destroy()
         global gapp
         print(gapp)
