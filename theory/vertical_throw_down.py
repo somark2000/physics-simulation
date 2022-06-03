@@ -105,7 +105,10 @@ class VerticalThrowDown:
         freefall.run(theory, gapp, h=20, m=1, v=10, t=1)
 
     def do_throw_at_angle(self):
-        self.practice.do_throwatangle(window=self.window)
+        try:
+            self.practice.do_throwatangle(window=self.window)
+        except:
+            gapp.do_courses(self.window)
 
     def do_throwup(self):
         print(self.practice)

@@ -1,4 +1,5 @@
 # imports
+import time
 import tkinter as tk
 
 import matplotlib.pyplot as plt
@@ -7,6 +8,7 @@ from matplotlib import animation
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from formula.calculates import *
 from formula.kinematics import *
+
 # from IPython.display import HTML
 # import ffmpeg
 
@@ -14,7 +16,7 @@ from formula.kinematics import *
 f_plot = False
 
 # mass options
-options = [1e20, 1e21,1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
+options = [1e20, 1e21, 1e22, 1e23, 1e24, 1e25, 1e26, 1e27, 1e28, 1e29, 1e30, 1e31]
 
 
 class ThreeBody:
@@ -75,7 +77,7 @@ class ThreeBody:
         self.tf = None
         self.ti = None
 
-    def run(self,practice, app):
+    def run(self, practice, app):
         self.practice = practice
         self.app = app
         global options
@@ -95,7 +97,7 @@ class ThreeBody:
         self.window.configure(bg='#0e1c1d')
         self.window.configure(width=1200)
 
-        self.fig, self.ax = py.subplots()
+        self.fig, self.ax = plt.subplots()
         self.ax.axis('square')
         self.ax.set_xlim((-10, 10))
         self.ax.set_ylim((-10, 10))
@@ -220,7 +222,8 @@ class ThreeBody:
         self.phi2_scale.grid(row=10, column=1)
         self.phi2_unit.grid(row=10, column=2)
         self.btn_plot.grid(row=12, column=1)
-        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', fg="white", border=0, command=lambda: self.home(self.window))
+        self.home_butt = tk.Button(text="Back", bg='#0e1c1d', fg="white", border=0,
+                                   command=lambda: self.home(self.window))
         self.home_butt.grid(row=12, column=2, pady=20)
 
         # show the window
@@ -259,17 +262,17 @@ class ThreeBody:
         return self.line1, self.line2,
 
     def mplot(self, fign, x, y, xl, yl, clr, lbl, alpha=1.0):
-        py.figure(fign)
-        py.xlabel(xl)
-        py.ylabel(yl)
-        return py.plot(x, y, clr, linewidth=1.0, label=lbl, alpha=alpha)
+        plt.figure(fign)
+        plt.xlabel(xl)
+        plt.ylabel(yl)
+        return plt.plot(x, y, clr, linewidth=1.0, label=lbl, alpha=alpha)
 
     def prepare(self):
         # resetting the figures
-        py.close(1)
-        py.close(2)
-        py.close(3)
-        py.close(4)
+        plt.close(1)
+        plt.close(2)
+        plt.close(3)
+        plt.close(4)
         for i in range(10):
             plt.close()
         self.canvas.flush_events()
@@ -280,7 +283,17 @@ class ThreeBody:
             pass
 
         # retrieving data from UI
-        data = self.get_data()
+        try:
+            data = self.get_data()
+            for i in range(7):
+                if data[i] == 0:
+                    raise Exception()
+        except:
+            tk.messagebox.showwarning("Warning", "Please set valid input values!")
+            time.sleep(1)
+            self.window.destroy()
+            self.run(app=self.app, practice=self.practice)
+
         m1, m2, m3, vv1, vv2, rr1, rr2, phi1, phi2 = data
         ti = 0  # initial time = 0
         tf = 120  # final time = 120 years
@@ -355,28 +368,30 @@ class ThreeBody:
         EE = FF * RR  # Unit energy
 
         lbl = 'orbit'
-        py.plot(0, 0, 'ro', linewidth=7)
+        plt.plot(0, 0, 'ro', linewidth=7)
         self.mplot(1, self.r1[:, 0], self.r1[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'blue', 'M1', 0.1)
         self.mplot(1, self.r2[:, 0], self.r2[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'green', 'M2', 0.1)
-        py.ylim([-9, 9])
+        plt.ylim([-9, 9])
 
-        py.axis('equal')
+        plt.axis('equal')
         self.mplot(2, self.t, KE1, r'Time, $t$ (years)',
                    r'Kinetice Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'blue', 'KE')
         self.mplot(2, self.t, PE1, r'Time, $t$ (years)',
                    r'Potential Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'red', 'PE')
         self.mplot(2, self.t, KE1 + PE1, r'Time, $t$ (years)',
                    r'Total Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'black', 'Total Energy')
-        q = py.legend(loc=0)
+        q = plt.legend(loc=0)
         q.draw_frame(False)
-        py.ylim([-180, 180])
+        plt.ylim([-180, 180])
 
         self.mplot(3, self.t, AM1, r'Time, $t$ (years)', r'Angular Momentum', 'black', lbl)
-        py.ylim([4, 8])
+        plt.ylim([4, 8])
 
         self.mplot(4, self.t, AreaVal1, r'Time, $t$ (years)', r'Sweeped Area ($AU^2$)', 'black', lbl)
         plt.show()
 
     def home(self, window):
+        for i in range(10):
+            plt.close()
         window.destroy()
         self.practice.run(self.app)

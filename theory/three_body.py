@@ -7,6 +7,8 @@ global gapp
 
 class ThreeBody:
     def __init__(self):
+        self.hm_img = None
+        self.bck_img = None
         self.second_frame = None
         self.y_scrollbar = None
         self.my_canvas = None
@@ -24,7 +26,7 @@ class ThreeBody:
         # setup for the UI window
         self.window = tk.Tk()
         self.window.configure(bg='#0e1c1d')
-        self.window.geometry("1200x900")
+        self.window.geometry("1300x900")
         self.window.title("Course - Three-Body Problem")
         # Create A Main frame
         self.main_frame = tk.Frame(self.window)
@@ -77,18 +79,18 @@ class ThreeBody:
 
         buttom = tk.Button(self.second_frame, text='Practice', command=lambda: self.do_practice())
         buttom.configure(bg='#0e1c1d', font=("Arial", 20), fg='white', pady=30, border=0)
-        hm_img = tk.PhotoImage(file="images/home.png")
-        bck_img = tk.PhotoImage(file="images/arrow_bck.png")
-        back_butt = tk.Button(self.second_frame, image=bck_img, command=lambda: self.do_throwatangle(), bg='#0e1c1d',
+        self.hm_img = tk.PhotoImage(file="images/home.png")
+        self.bck_img = tk.PhotoImage(file="images/arrow_bck.png")
+        back_butt = tk.Button(self.second_frame, image=self.bck_img, command=lambda: self.do_throwatangle(), bg='#0e1c1d',
                               fg='white', pady=30, border=0)
-        home_butt = tk.Button(self.second_frame, image=hm_img, command=lambda: self.do_course(), bg='#0e1c1d',
+        home_butt = tk.Button(self.second_frame, image=self.hm_img, command=lambda: self.do_course(), bg='#0e1c1d',
                               fg='white', pady=30, border=0)
         preset_butt = tk.Button(self.second_frame, text='Presets', command=lambda: self.training())
         preset_butt.configure(bg='#0e1c1d', font=("Arial", 20), fg='white', pady=30, border=0)
 
         # pack all the UI elements to the frame
         welcome_label.grid(row=0, column=1, columnspan=2)
-        home_butt.grid(row=0, column=3)
+        home_butt.grid(row=0, column=4)
         back_butt.grid(row=0, column=0)
         p1.grid(row=1, column=1, columnspan=2)
         p2.grid(row=2, column=1, columnspan=2)
@@ -151,3 +153,5 @@ class ThreeBody:
         b4.grid(row=10, column=2)
         b5.grid(row=11, column=1)
         b6.grid(row=11, column=2)
+        self.y_scrollbar = tk.Scrollbar(self.main_frame, orient=tk.VERTICAL, command=self.my_canvas.yview)
+        # self.y_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)

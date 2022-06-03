@@ -1,9 +1,10 @@
 # imports
+import time
 import tkinter as tk
 
 import matplotlib.pyplot as plt
 import pylab as py
-from matplotlib import animation
+from matplotlib import animation, pylab
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 from formula.calculates import *
 from formula.kinematics import *
@@ -83,7 +84,7 @@ class ThreeBody:
         gapp = app
         # positions
         self.ti = 0  # initial time = 0
-        self.tf = 120  # final time = 120 years
+        self.tf = 120  # final time = 200 years
         self.N = 100 * self.tf  # 100 points per year
         self.r1 = np.zeros([self.N, 2])  # position vector of m1
         self.v1 = np.zeros([self.N, 2])  # velocity vector of m1
@@ -97,7 +98,7 @@ class ThreeBody:
         self.window.configure(bg='#0e1c1d')
         self.window.configure(width=1200)
 
-        self.fig, self.ax = py.subplots()
+        self.fig, self.ax = plt.subplots()
         self.ax.axis('square')
         self.ax.set_xlim((-10, 10))
         self.ax.set_ylim((-10, 10))
@@ -272,17 +273,17 @@ class ThreeBody:
         return self.line1, self.line2,
 
     def mplot(self, fign, x, y, xl, yl, clr, lbl, alpha=1.0):
-        py.figure(fign)
-        py.xlabel(xl)
-        py.ylabel(yl)
-        return py.plot(x, y, clr, linewidth=1.0, label=lbl, alpha=alpha)
+        plt.figure(fign)
+        plt.xlabel(xl)
+        plt.ylabel(yl)
+        return plt.plot(x, y, clr, linewidth=1.0, label=lbl, alpha=alpha)
 
     def prepare(self):
         # resetting the figures
-        py.close(1)
-        py.close(2)
-        py.close(3)
-        py.close(4)
+        # py.close(1)
+        # py.close(2)
+        # py.close(3)
+        # py.close(4)
         for i in range(10):
             plt.close()
         self.canvas.flush_events()
@@ -293,7 +294,17 @@ class ThreeBody:
             pass
 
         # retrieving data from UI
-        data = self.get_data()
+        try:
+            data = self.get_data()
+            for i in range(7):
+                if data[i] == 0:
+                    raise Exception()
+        except:
+            tk.messagebox.showwarning("Warning", "Please set valid input values!")
+            time.sleep(1)
+            self.window.destroy()
+            self.run(app=self.app, practice=self.practice, m1=0, m2=0, mc=0, v1=0, v2=0, r1=0, r2=0, p1=0, p2=0,s1=4,s2=4,s3=4)
+
         m1, m2, m3, vv1, vv2, rr1, rr2, phi1, phi2 = data
         ti = 0  # initial time = 0
         tf = 120  # final time = 120 years
@@ -368,24 +379,24 @@ class ThreeBody:
         EE = FF * RR  # Unit energy
 
         lbl = 'orbit'
-        py.plot(0, 0, 'ro', linewidth=7)
+        plt.plot(0, 0, 'ro', linewidth=7)
         self.mplot(1, self.r1[:, 0], self.r1[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'blue', 'M1', 0.1)
         self.mplot(1, self.r2[:, 0], self.r2[:, 1], r'$x$ position (AU)', r'$y$ position (AU)', 'green', 'M2', 0.1)
-        py.ylim([-9, 9])
+        plt.ylim([-9, 9])
 
-        py.axis('equal')
+        plt.axis('equal')
         self.mplot(2, self.t, KE1, r'Time, $t$ (years)',
                    r'Kinetice Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'blue', 'KE')
         self.mplot(2, self.t, PE1, r'Time, $t$ (years)',
                    r'Potential Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'red', 'PE')
         self.mplot(2, self.t, KE1 + PE1, r'Time, $t$ (years)',
                    r'Total Energy, $KE$ ($\times$' + str("%.*e" % (2, EE)) + ' Joule)', 'black', 'Total Energy')
-        q = py.legend(loc=0)
+        q = plt.legend(loc=0)
         q.draw_frame(False)
-        py.ylim([-180, 180])
+        plt.ylim([-180, 180])
 
         self.mplot(3, self.t, AM1, r'Time, $t$ (years)', r'Angular Momentum', 'black', lbl)
-        py.ylim([4, 8])
+        plt.ylim([4, 8])
 
         self.mplot(4, self.t, AreaVal1, r'Time, $t$ (years)', r'Sweeped Area ($AU^2$)', 'black', lbl)
         plt.show()
